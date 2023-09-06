@@ -1,0 +1,42 @@
+.app-header {
+  background: rgb(45, 124, 124);
+  color: white;
+  height: 65px;
+}
+
+.app-header section.container {
+  display: flex;
+  align-items: center;
+}
+
+.app-header h1.logo {
+  flex-grow: 1;
+  font-weight: 600;
+}
+
+.app-header .back {
+  flex-grow: 1;
+}
+
+.app-header nav a:not(:last-child) {
+  margin-right: 10px;
+}
+
+.app-header section.container > section {
+  flex-grow: 1;
+}
+.app-header h1 {
+  margin: 0;
+}
+
+.app-header h1 {
+  flex-grow: 1; /* Allows the title to take up available space on the left */
+}
+
+nav {
+  text-align: right; /* Aligns the navigation links to the right */
+}
+
+.active {
+  font-size: larger;
+}

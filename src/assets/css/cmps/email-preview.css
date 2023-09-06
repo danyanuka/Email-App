@@ -1,0 +1,12 @@
+.email-preview h1 {
+  font-weight: bold;
+  position: relative;
+}
+
+.email-preview p {
+  color: rgb(129, 120, 120);
+  font-size: 0.8rem;
+}
+.checkbox {
+  margin-right: 7px;
+}
