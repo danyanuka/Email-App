@@ -1,11 +1,16 @@
-.list-ul {
+.email-ul {
   list-style: none;
 }
 
-.hr-list-lines {
-  height: 1px;
-  border: none;
-  background-color: #b8b3b3;
-  margin-top: 5px;
-  margin-bottom: 0;
+.removeBtn {
+  margin-left: 10px;
+}
+
+.removeBtn {
+  margin-right: 10px;
+}
+
+.email-li {
+  border-bottom: 1px solid #d8d8d8;
+  margin: 5px;
 }

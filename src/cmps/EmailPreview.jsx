@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 export function EmailPreview({ email }) {
   return (
-    <article className="email-preview flex">
+    <Link className="email-preview flex full-grow" to={`/email/${email.id}`}>
       <div style={{ width: "25%" }}>
         <h1>{email.from}</h1>
       </div>
@@ -10,7 +12,7 @@ export function EmailPreview({ email }) {
       <div style={{ width: "25%" }}>
         <p>{email.body}</p>
       </div>
-    </article>
+    </Link>
   );
 }
 // id: "e101",

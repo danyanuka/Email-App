@@ -12,6 +12,7 @@ export const robotService = {
   remove,
   getById,
   createRobot,
+  loggedinUser,
 };
 
 const STORAGE_KEY = "emails";
