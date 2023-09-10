@@ -166,6 +166,10 @@
   width: 100%;
 }
 
+.w25 {
+  width: 25%;
+}
+
 .form-errors {
   text-align: center;
   margin-top: 24px;

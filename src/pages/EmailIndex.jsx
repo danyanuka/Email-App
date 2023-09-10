@@ -5,6 +5,7 @@ import { ComposeEmail } from "../cmps/ComposeEmail";
 
 export function EmailIndex() {
   const [emails, setEmails] = useState(null);
+  const [filterBy, setFilterBy] = useState();
   const [isCompose, setCompose] = useState(false);
 
   useEffect(() => {
@@ -16,6 +17,7 @@ export function EmailIndex() {
     try {
       const emails = await robotService.query();
       setEmails(emails);
+      console.log(emails);
     } catch (err) {
       console.error("Had issued loading Emails", err);
     }
@@ -33,6 +35,20 @@ export function EmailIndex() {
     }
   }
 
+  async function MarkAsRead(emailToMark) {
+    try {
+      emailToMark.isRead = true;
+      await robotService.save(emailToMark);
+      const updatedEmail = emails.map((email) => {
+        if (email.id === emailToMark.id) {
+          return { ...email, isRead: true };
+        } else return email;
+      });
+      setEmails(updatedEmail);
+      console.log(updatedEmail);
+    } catch (error) {}
+  }
+
   // Conditional render - IF theres data, render it
   if (!emails) return <div>Loading your Emails...</div>;
   return (
@@ -40,7 +56,7 @@ export function EmailIndex() {
       <h1>Emails:</h1>
       <button onClick={() => setCompose(true)}>Compose Email</button>
 
-      <EmailList emails={emails} onRemove={onRemove} />
+      <EmailList emails={emails} onRemove={onRemove} MarkAsRead={MarkAsRead} />
       {/* render Compose Email Modal */}
       {isCompose && (
         <ComposeEmail isCompose={isCompose} setCompose={setCompose} />

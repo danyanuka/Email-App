@@ -1,11 +1,11 @@
 import { EmailPreview } from "./EmailPreview";
 
-export function EmailList({ emails, onRemove, onOpen }) {
+export function EmailList({ emails, onRemove, MarkAsRead }) {
   return (
     <ul className="email-ul">
       {emails.map((email) => (
         <li className="email-li flex" key={email.id}>
-          <EmailPreview email={email} />
+          <EmailPreview email={email} MarkAsRead={MarkAsRead} />
 
           <button
             className="simple-button removeBtn"

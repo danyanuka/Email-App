@@ -1,16 +1,28 @@
 import { Link } from "react-router-dom";
 
-export function EmailPreview({ email }) {
+export function EmailPreview({ email, MarkAsRead }) {
+  const dynClassColor = email.isRead ? "AliceBlue" : "white";
+  const CustomTag = email.isRead ? `h4` : "h1";
+
   return (
-    <Link className="email-preview flex full-grow" to={`/email/${email.id}`}>
-      <div style={{ width: "25%" }}>
-        <h1>{email.from}</h1>
+    <Link
+      style={{ backgroundColor: dynClassColor }}
+      onClick={() => MarkAsRead(email)}
+      className="email-preview flex full-grow"
+      to={`/email/${email.id}`}
+    >
+      <div className="w25">
+        <CustomTag>{email.from}</CustomTag>
       </div>
-      <div style={{ width: "25%" }}>
-        <h1>{email.subject}</h1>
+      <div className="w25">
+        <CustomTag>{email.subject}</CustomTag>
       </div>
-      <div style={{ width: "25%" }}>
-        <p>{email.body}</p>
+      <div className="w25">
+        <p>
+          {email.body && email.body.length > 20
+            ? `${email.body.slice(0, 39)}...`
+            : email.body}
+        </p>
       </div>
     </Link>
   );

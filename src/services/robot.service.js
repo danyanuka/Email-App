@@ -33,12 +33,11 @@ function remove(id) {
   return storageService.remove(STORAGE_KEY, id);
 }
 
-function save(robotToSave) {
-  if (robotToSave.id) {
-    return storageService.put(STORAGE_KEY, robotToSave);
+function save(emailToSave) {
+  if (emailToSave.id) {
+    return storageService.put(STORAGE_KEY, emailToSave);
   } else {
-    robotToSave.isOn = false;
-    return storageService.post(STORAGE_KEY, robotToSave);
+    return storageService.post(STORAGE_KEY, emailToSave);
   }
 }
 
@@ -73,7 +72,29 @@ function _createEmails() {
         isStarred: false,
         sentAt: 1551133930594,
         removedAt: null, //for later use
-        from: "momo@momo.com",
+        from: "shuki@momo.com",
+        to: "user@appsus.com",
+      },
+      {
+        id: "e103",
+        subject: "Lecture Sum",
+        body: "We started with code review and then We learned about routes. at the end we practices filtering  ",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "puki@momo.com",
+        to: "user@appsus.com",
+      },
+      {
+        id: "e104",
+        subject: "Out of ideas",
+        body: "Out of ideas Out of ideas Out of ideas Out of ideas  ",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "looki@momo.com",
         to: "user@appsus.com",
       },
     ];
