@@ -82,6 +82,7 @@ input {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #f3f5f8;
 }
 
 .main-app main {

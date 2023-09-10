@@ -1,5 +1,8 @@
 .email-ul {
   list-style: none;
+  padding-left: 0;
+
+  border-radius: 10px;
 }
 
 .removeBtn {
@@ -12,5 +15,4 @@
 
 .email-li {
   border-bottom: 1px solid #d8d8d8;
-  margin: 5px;
 }

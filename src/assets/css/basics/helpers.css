@@ -131,6 +131,14 @@
   margin: 20px;
 }
 
+.m20l {
+  margin-left: 20px;
+}
+
+.m40l {
+  margin-left: 40px;
+}
+
 /* Normalize Background */
 .normBackground {
   background-repeat: no-repeat;

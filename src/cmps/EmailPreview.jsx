@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 
 export function EmailPreview({ email, MarkAsRead }) {
-  const dynClassColor = email.isRead ? "AliceBlue" : "white";
+  const dynClassColor = email.isRead ? "#cce6ff" : "white";
   const CustomTag = email.isRead ? `h4` : "h1";
+
+  function getDate() {
+    const timeStamp = email.sentAt;
+    const date = new Date(timeStamp);
+    return date.toDateString();
+  }
 
   return (
     <Link
@@ -20,9 +26,12 @@ export function EmailPreview({ email, MarkAsRead }) {
       <div className="w25">
         <p>
           {email.body && email.body.length > 20
-            ? `${email.body.slice(0, 39)}...`
+            ? `${email.body.slice(0, 38)}...`
             : email.body}
         </p>
+      </div>
+      <div className="w25">
+        <span className="m40l">{getDate()}</span>
       </div>
     </Link>
   );

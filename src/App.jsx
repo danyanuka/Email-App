@@ -19,7 +19,7 @@ export function App() {
       <section className="main-app">
         <NavBar />
 
-        <main className="container">
+        <main className="main container">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/email" element={<EmailIndex />} />

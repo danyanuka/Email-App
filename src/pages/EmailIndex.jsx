@@ -52,16 +52,22 @@ export function EmailIndex() {
   // Conditional render - IF theres data, render it
   if (!emails) return <div>Loading your Emails...</div>;
   return (
-    <section className="email-index">
-      <h1>Emails:</h1>
-      <button onClick={() => setCompose(true)}>Compose Email</button>
-
-      <EmailList emails={emails} onRemove={onRemove} MarkAsRead={MarkAsRead} />
-      {/* render Compose Email Modal */}
-      {isCompose && (
-        <ComposeEmail isCompose={isCompose} setCompose={setCompose} />
-      )}
-    </section>
+    <>
+      <button className="compose-btn" onClick={() => setCompose(true)}>
+        Compose
+      </button>
+      <section className="email-index">
+        <EmailList
+          emails={emails}
+          onRemove={onRemove}
+          MarkAsRead={MarkAsRead}
+        />
+        {/* render Compose Email Modal */}
+        {isCompose && (
+          <ComposeEmail isCompose={isCompose} setCompose={setCompose} />
+        )}
+      </section>
+    </>
   );
 }
 
