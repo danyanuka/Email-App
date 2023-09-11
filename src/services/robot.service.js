@@ -20,10 +20,32 @@ const STORAGE_KEY = "emails";
 _createEmails();
 
 async function query(filterBy) {
-  const emails = await storageService.query(STORAGE_KEY);
+  try {
+    console.log("from service :", filterBy);
+    let emails = await storageService.query(STORAGE_KEY);
+    if (filterBy) {
+      const fieldsToSearch = ["body", "subject"];
+      let { isRead, text = "" } = filterBy;
+      if (isRead !== null) {
+        emails = emails.filter((email) => email.isRead === isRead);
+      }
+      emails = emails.filter((email) =>
+        fieldsToSearch.some((field) =>
+          email[field].toLowerCase().includes(text.toLowerCase())
+        )
+      );
+    }
 
-  return emails;
+    return emails;
+  } catch (error) {
+    console.error("You have no Unread emails");
+  }
 }
+// if (filterBy) {
+//   let { minBatteryStatus, type = '' } = filterBy
+//   minBatteryStatus = minBatteryStatus || 0
+//   robots = robots.filter(robot => robot.type.toLowerCase().includes(type.toLowerCase())
+//       && robot.batteryStatus > minBatteryStatus)
 
 function getById(id) {
   return storageService.get(STORAGE_KEY, id);

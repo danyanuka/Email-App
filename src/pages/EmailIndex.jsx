@@ -2,20 +2,32 @@ import { useEffect, useRef, useState } from "react";
 import { robotService } from "../services/robot.service";
 import { EmailList } from "../cmps/EmailList";
 import { ComposeEmail } from "../cmps/ComposeEmail";
+import { EmailFilter } from "../cmps/EmailFilter";
 
 export function EmailIndex() {
   const [emails, setEmails] = useState(null);
-  const [filterBy, setFilterBy] = useState();
+  const [filterBy, setFilterBy] = useState({
+    isRead: null,
+    text: "",
+    subject: "",
+    isStarred: false,
+    sentAt: null,
+  });
   const [isCompose, setCompose] = useState(false);
 
   useEffect(() => {
     loadEmails();
-  }, []);
+  }, [filterBy]);
+
+  //
+  function onSetFilter(fieldToUpdate) {
+    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...fieldToUpdate }));
+  }
 
   // Sets State From storage
   async function loadEmails() {
     try {
-      const emails = await robotService.query();
+      const emails = await robotService.query(filterBy);
       setEmails(emails);
       console.log(emails);
     } catch (err) {
@@ -45,7 +57,6 @@ export function EmailIndex() {
         } else return email;
       });
       setEmails(updatedEmail);
-      console.log(updatedEmail);
     } catch (error) {}
   }
 
@@ -56,6 +67,7 @@ export function EmailIndex() {
       <button className="compose-btn" onClick={() => setCompose(true)}>
         Compose
       </button>
+      <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
       <section className="email-index">
         <EmailList
           emails={emails}
