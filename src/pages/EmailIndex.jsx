@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { robotService } from "../services/robot.service";
+import { emailService } from "../services/email.service";
 import { EmailList } from "../cmps/EmailList";
 import { ComposeEmail } from "../cmps/ComposeEmail";
 import { EmailFilter } from "../cmps/EmailFilter";
@@ -13,13 +13,14 @@ export function EmailIndex() {
     isStarred: false,
     sentAt: null,
   });
-  const [isCompose, setCompose] = useState(false);
+  const [isComposeModal, setComposeModal] = useState(false);
 
   useEffect(() => {
     loadEmails();
   }, [filterBy]);
 
   //
+  // Setting the State of the global filter
   function onSetFilter(fieldToUpdate) {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...fieldToUpdate }));
   }
@@ -27,9 +28,9 @@ export function EmailIndex() {
   // Sets State From storage
   async function loadEmails() {
     try {
-      const emails = await robotService.query(filterBy);
+      const emails = await emailService.query(filterBy);
       setEmails(emails);
-      console.log(emails);
+      console.log("From Index (LoadEmails)", emails);
     } catch (err) {
       console.error("Had issued loading Emails", err);
     }
@@ -38,7 +39,7 @@ export function EmailIndex() {
   // Delete Email
   async function onRemove(emailId) {
     try {
-      await robotService.remove(emailId);
+      await emailService.remove(emailId);
       setEmails((prevEmails) =>
         prevEmails.filter((email) => emailId !== email.id)
       );
@@ -47,16 +48,25 @@ export function EmailIndex() {
     }
   }
 
+  async function onAdd(email) {
+    const newEmail = await emailService.save(email);
+    setEmails((prevEmails) => [...prevEmails, newEmail]);
+  }
+
   async function MarkAsRead(emailToMark) {
     try {
       emailToMark.isRead = true;
-      await robotService.save(emailToMark);
-      const updatedEmail = emails.map((email) => {
-        if (email.id === emailToMark.id) {
-          return { ...email, isRead: true };
-        } else return email;
-      });
-      setEmails(updatedEmail);
+      await emailService.save(emailToMark);
+      // const updatedEmail = emails.map((email) => {
+      //   if (email.id === emailToMark.id) {
+      //     return { ...email, isRead: true };
+      //   } else return email;
+      // });
+      setEmails((prevEmails) =>
+        prevEmails.map((email) =>
+          email.id === emailToMark.id ? emailToMark : email
+        )
+      );
     } catch (error) {}
   }
 
@@ -64,7 +74,7 @@ export function EmailIndex() {
   if (!emails) return <div>Loading your Emails...</div>;
   return (
     <>
-      <button className="compose-btn" onClick={() => setCompose(true)}>
+      <button className="compose-btn" onClick={() => setComposeModal(true)}>
         Compose
       </button>
       <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
@@ -75,10 +85,10 @@ export function EmailIndex() {
           MarkAsRead={MarkAsRead}
         />
         {/* render Compose Email Modal */}
-        {isCompose && (
-          <ComposeEmail isCompose={isCompose} setCompose={setCompose} />
-        )}
       </section>
+      {isComposeModal && (
+        <ComposeEmail setComposeModal={setComposeModal} onAdd={onAdd} />
+      )}
     </>
   );
 }
@@ -93,8 +103,4 @@ export function EmailIndex() {
 //         from: "momo@momo.com",
 //         to: "user@appsus.com",
 
-// {/* Conditionaly Rendering the WatcherModal if Null Not rendered */}
-// {selectedWatcher && (
-//   <WatcherModal
-//     selectedWatcher={selectedWatcher}
-//     setSelectedWatcher={setSelectedWatcher}
+//

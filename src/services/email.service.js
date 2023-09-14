@@ -6,7 +6,7 @@ const loggedinUser = {
   fullname: "Mahatma Appsus",
 };
 
-export const robotService = {
+export const emailService = {
   query,
   save,
   remove,
@@ -21,7 +21,6 @@ _createEmails();
 
 async function query(filterBy) {
   try {
-    console.log("from service :", filterBy);
     let emails = await storageService.query(STORAGE_KEY);
     if (filterBy) {
       const fieldsToSearch = ["body", "subject"];
@@ -38,7 +37,7 @@ async function query(filterBy) {
 
     return emails;
   } catch (error) {
-    console.error("You have no Unread emails");
+    console.error("You have no Unread emails", error);
   }
 }
 // if (filterBy) {

@@ -32,10 +32,19 @@ export function EmailFilter({ onSetFilter, filterBy }) {
       <input
         onChange={handleChange}
         type="text"
-        id="text"
         placeholder="Search by text"
         name="text"
+        id="text"
       ></input>
     </form>
   );
 }
+//         id: "e101",
+//         subject: "Miss you!",
+//         body: "Would love to catch up sometimes",
+//         isRead: false,
+//         isStarred: false,
+//         sentAt: 1551133930594,
+//         removedAt: null, //for later use
+//         from: "momo@momo.com",
+//         to: "user@appsus.com",

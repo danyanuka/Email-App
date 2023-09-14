@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { robotService } from "../services/robot.service";
+import { emailService } from "../services/email.service";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export function EmailDetails() {
 
   async function loadEmail() {
     try {
-      const email = await robotService.getById(params.emailId);
+      const email = await emailService.getById(params.emailId);
       setEmail(email);
     } catch (error) {
       console.error("Could not find Email", error);
@@ -26,7 +26,7 @@ export function EmailDetails() {
     return date.toLocaleString();
   }
 
-  console.log(email);
+  console.log("From EmailDetails :", email);
   if (!email) return <div>Loading your Emails...</div>;
   return (
     <section className="details container">
