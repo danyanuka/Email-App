@@ -3,6 +3,8 @@ import { emailService } from "../services/email.service";
 import { EmailList } from "../cmps/EmailList";
 import { ComposeEmail } from "../cmps/ComposeEmail";
 import { EmailFilter } from "../cmps/EmailFilter";
+import { IndexNav } from "../cmps/IndexNav";
+import { Aside } from "../cmps/Aside";
 
 export function EmailIndex() {
   const [emails, setEmails] = useState(null);
@@ -73,23 +75,27 @@ export function EmailIndex() {
   // Conditional render - IF theres data, render it
   if (!emails) return <div>Loading your Emails...</div>;
   return (
-    <>
-      <button className="compose-btn" onClick={() => setComposeModal(true)}>
-        Compose
-      </button>
-      <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
-      <section className="email-index">
+    <div className="email-index-grid-container">
+      {/* ------------------------------------------------------------------------------------- */}
+      <IndexNav filterBy={filterBy} onSetFilter={onSetFilter} />
+      {/* ------------------------------------------------------------------------------------- */}
+      <section className="email-inbox">
         <EmailList
           emails={emails}
           onRemove={onRemove}
           MarkAsRead={MarkAsRead}
         />
-        {/* render Compose Email Modal */}
+        {isComposeModal && (
+          <ComposeEmail setComposeModal={setComposeModal} onAdd={onAdd} />
+        )}
       </section>
-      {isComposeModal && (
-        <ComposeEmail setComposeModal={setComposeModal} onAdd={onAdd} />
-      )}
-    </>
+      {/* ------------------------------------------------------------------------------------- */}
+      <Aside setComposeModal={setComposeModal}></Aside>
+      {/* ------------------------------------------------------------------------------------- */}
+      <footer className="footer">
+        <section>robotRights 2023 &copy;</section>
+      </footer>
+    </div>
   );
 }
 

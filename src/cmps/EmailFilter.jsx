@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export function EmailFilter({ onSetFilter, filterBy }) {
   const [filterByToEdit, setfilterByToEdit] = useState(filterBy);
@@ -22,20 +24,25 @@ export function EmailFilter({ onSetFilter, filterBy }) {
   }
 
   return (
-    <form onSubmit={onSubmitFilter} className="email-filter p20">
+    <form onSubmit={onSubmitFilter} className="email-nav-filter">
+      <label htmlFor="text"></label>
+      <div className="search-bar">
+        <span>
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        </span>
+        <input
+          onChange={handleChange}
+          type="text"
+          placeholder="Search Email"
+          name="text"
+          id="text"
+        ></input>
+      </div>
       <select onChange={handleChange} name="isRead">
         <option value={"null"}>All</option>
         <option value={"false"}>Unread</option>
         <option value={"true"}>Read</option>
       </select>
-      <label htmlFor="text">Text: </label>
-      <input
-        onChange={handleChange}
-        type="text"
-        placeholder="Search by text"
-        name="text"
-        id="text"
-      ></input>
     </form>
   );
 }

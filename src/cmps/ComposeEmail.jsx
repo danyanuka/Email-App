@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { emailService } from "../services/email.service";
 export function ComposeEmail({ setComposeModal, onAdd }) {
-  const tableCellStyle = { border: "1px solid black" };
   const [email, setEmail] = useState({
     subject: "Not specified",
-    body: "",
+    body: "Not specified",
     isRead: false,
     isStarred: false,
     sentAt: 1551133930594,
@@ -20,44 +18,47 @@ export function ComposeEmail({ setComposeModal, onAdd }) {
   function onSubmitEmail(ev) {
     ev.preventDefault();
     onAdd(email);
+    setComposeModal(false);
+  }
+
+  function handleSubjectKeyPress(ev) {
+    console.log(ev.key);
+    if (ev.key === "Enter") {
+      ev.preventDefault(); // Prevent the default form submission when Enter is pressed
+    }
   }
 
   return (
-    <section className="container">
-      <form onSubmit={onSubmitEmail}>
-        <div className="form-head">
-          <label htmlFor="subject">Subject </label>
-          <input
-            onChange={handleChange}
-            type="text"
-            name="subject"
-            placeholder="subject"
-            id="subject"
-          ></input>
-        </div>
-        {/* SEPERATOR */}
-        <div className="form-body">
-          <label htmlFor="body">Email Body </label>
-          <input
-            onChange={handleChange}
-            type="text"
-            name="body"
-            placeholder="Type Your Email's content"
-            id="body"
-          ></input>
-        </div>
-        <button type="submit">Send Email</button>
-      </form>
-      <button onClick={() => setComposeModal(false)}>Close</button>
-    </section>
+    <form className="compose-form" onSubmit={onSubmitEmail}>
+      <div className="form-head">
+        <h1>New Message</h1>
+        <button className="close-btn" onClick={() => setComposeModal(false)}>
+          X
+        </button>
+      </div>
+      <label htmlFor="subject"></label>
+      <input
+        className="form-subject"
+        onChange={handleChange}
+        onKeyPress={handleSubjectKeyPress}
+        type="text"
+        name="subject"
+        placeholder="subject"
+        id="subject"
+      ></input>
+
+      <label htmlFor="body"></label>
+      <textarea
+        className="form-body"
+        onChange={handleChange}
+        type="text"
+        name="body"
+        placeholder="Email's Body"
+        id="body"
+      ></textarea>
+      <button className="submit-btn" type="submit">
+        Send
+      </button>
+    </form>
   );
 }
-//         id: "e101",
-//         subject: "Miss you!",
-//         body: "Would love to catch up sometimes",
-//         isRead: false,
-//         isStarred: false,
-//         sentAt: 1551133930594,
-//         removedAt: null, //for later use
-//         from: "momo@momo.com",
-//         to: "user@appsus.com",

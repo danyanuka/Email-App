@@ -1,0 +1,8 @@
+.index-nav {
+  display: flex;
+  color: black;
+}
+
+.email-nav-filter {
+  margin-inline-start: 120px;
+}

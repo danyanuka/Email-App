@@ -1,6 +1,7 @@
-.email-index {
+.email-inbox {
   background-color: rgb(255, 255, 255);
   padding: 5px;
+  margin-top: 5px;
   border-radius: 10px;
 }
 

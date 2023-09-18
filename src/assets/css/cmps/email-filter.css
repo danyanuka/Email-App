@@ -1,20 +1,38 @@
-.email-filter {
-  background-color: #f0f0f0;
+.email-nav-filter {
+  display: flex;
   padding: 10px;
-  border: 1px solid #ccc;
-  width: 50%;
   justify-content: space-between;
 }
-
-.email-filter select,
-.email-filter input {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #c9d6ff39;
+  border-radius: 24px;
+  padding: 25px;
+  width: 600px;
+}
+.email-nav-filter input {
+  border: none;
+  transition: border-color 0.3s;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: transparent;
+  outline: none;
 }
 
-.email-filter label {
-  font-weight: bold;
-  margin-right: 10px;
+.search-bar:focus-within {
+  background-color: white;
+}
+
+/* .email-nav-filter input:focus  {
+ 
+} */
+
+.email-nav-filter select {
+  border: none;
+  background-color: #c9d6ff39;
+  margin-inline-start: 5px;
+  outline: none;
+  padding: 5px;
+  border-radius: 20px;
 }
