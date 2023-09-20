@@ -1,9 +1,10 @@
 import { useState } from "react";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faStar as shallowStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
 export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -48,7 +49,7 @@ export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
         fontWeight: dynClassBoldness,
         // ...hoverStyles,
       }}
-      onClick={() => markAsRead(email)}
+      onClick={() => markAsRead(email, false)}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -76,26 +77,33 @@ export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
       )}
       {/* When is Hovered = True */}
       {isHovered && (
-        <button
-          className="email-preview-remove"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onRemove(email.id);
-          }}
-        >
-          <FontAwesomeIcon icon={faTrashCan} />
-        </button>
+        <div className="btns">
+          <button
+            className="email-preview-env"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              markAsRead(email, true);
+            }}
+          >
+            {email.isRead === false ? (
+              <FontAwesomeIcon icon={faEnvelopeOpen} />
+            ) : (
+              <FontAwesomeIcon icon={faEnvelope} />
+            )}
+          </button>
+          <button
+            className="email-preview-remove"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove(email.id);
+            }}
+          >
+            <FontAwesomeIcon icon={faTrashCan} />
+          </button>
+        </div>
       )}
     </article>
   );
 }
-// id: "e101",
-//         subject: "Miss you!",
-//         body: "Would love to catch up sometimes",
-//         isRead: false,
-//         isStarred: false,
-//         sentAt: 1551133930594,
-//         removedAt: null, //for later use
-//         from: "momo@momo.com",
-//         to: "user@appsus.com",

@@ -55,9 +55,10 @@ export function EmailIndex() {
     setEmails((prevEmails) => [...prevEmails, newEmail]);
   }
 
-  async function markAsRead(emailToMark) {
+  async function markAsRead(emailToMark, eventFrom) {
     try {
-      emailToMark.isRead = true;
+      if (eventFrom === false) emailToMark.isRead = true;
+      else emailToMark.isRead = !emailToMark.isRead;
       await emailService.save(emailToMark);
 
       setEmails((prevEmails) =>
