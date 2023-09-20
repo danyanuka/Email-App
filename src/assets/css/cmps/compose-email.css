@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 66%;
-  left: 82%;
+  top: 60%;
+  left: 80%;
   transform: translate(-50%, -50%);
   z-index: 999;
   background: white; /* Background color */
@@ -34,8 +34,8 @@
   font-size: medium;
 }
 .form-body {
-  height: 480px;
-  width: 570px;
+  height: 400px;
+  width: 500px;
   outline: none;
   border: none;
   margin: 0 20px 0px 20px;

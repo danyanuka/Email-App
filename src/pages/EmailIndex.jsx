@@ -55,18 +55,27 @@ export function EmailIndex() {
     setEmails((prevEmails) => [...prevEmails, newEmail]);
   }
 
-  async function MarkAsRead(emailToMark) {
+  async function markAsRead(emailToMark) {
     try {
       emailToMark.isRead = true;
       await emailService.save(emailToMark);
-      // const updatedEmail = emails.map((email) => {
-      //   if (email.id === emailToMark.id) {
-      //     return { ...email, isRead: true };
-      //   } else return email;
-      // });
+
       setEmails((prevEmails) =>
         prevEmails.map((email) =>
           email.id === emailToMark.id ? emailToMark : email
+        )
+      );
+    } catch (error) {}
+  }
+
+  async function toggleStar(emailToStar) {
+    try {
+      emailToStar.isStarred = !emailToStar.isStarred;
+      await emailService.save(emailToStar);
+
+      setEmails((prevEmails) =>
+        prevEmails.map((email) =>
+          email.id === emailToStar.id ? emailToStar : email
         )
       );
     } catch (error) {}
@@ -79,11 +88,12 @@ export function EmailIndex() {
       {/* ------------------------------------------------------------------------------------- */}
       <IndexNav filterBy={filterBy} onSetFilter={onSetFilter} />
       {/* ------------------------------------------------------------------------------------- */}
-      <section className="email-inbox">
+      <section className="email-index-main">
         <EmailList
           emails={emails}
           onRemove={onRemove}
-          MarkAsRead={MarkAsRead}
+          markAsRead={markAsRead}
+          toggleStar={toggleStar}
         />
         {isComposeModal && (
           <ComposeEmail setComposeModal={setComposeModal} onAdd={onAdd} />

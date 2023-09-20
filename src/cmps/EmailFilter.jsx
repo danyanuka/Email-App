@@ -24,7 +24,7 @@ export function EmailFilter({ onSetFilter, filterBy }) {
   }
 
   return (
-    <form onSubmit={onSubmitFilter} className="email-nav-filter">
+    <form onSubmit={onSubmitFilter} className="index-nav-filter">
       <label htmlFor="text"></label>
       <div className="search-bar">
         <span>

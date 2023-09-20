@@ -1,17 +1,16 @@
-.email-nav-filter {
+.index-nav-filter {
   display: flex;
-  padding: 10px;
-  justify-content: space-between;
+  padding: 10px 0 5px 0;
 }
 .search-bar {
   display: flex;
   align-items: center;
-  background-color: #c9d6ff39;
+  background-color: #c9d6ff41;
   border-radius: 24px;
   padding: 25px;
   width: 600px;
 }
-.email-nav-filter input {
+.index-nav-filter input {
   border: none;
   transition: border-color 0.3s;
   font-size: 16px;
@@ -22,17 +21,18 @@
 
 .search-bar:focus-within {
   background-color: white;
+  box-shadow: 2px 2px 2px 2px;
 }
 
-/* .email-nav-filter input:focus  {
- 
-} */
-
-.email-nav-filter select {
+.index-nav-filter select {
   border: none;
-  background-color: #c9d6ff39;
+  background-color: #c9d6ff41;
   margin-inline-start: 5px;
   outline: none;
   padding: 5px;
   border-radius: 20px;
+}
+
+.index-nav-filter select:focus {
+  box-shadow: 2px 2px 2px 2px;
 }

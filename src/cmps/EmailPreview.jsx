@@ -1,39 +1,93 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
-export function EmailPreview({ email, MarkAsRead }) {
-  const dynClassColor = email.isRead ? "#cce6ff" : "white";
-  const CustomTag = email.isRead ? `h4` : "h1";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faStar as shallowStar } from "@fortawesome/free-regular-svg-icons";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 
-  function getDate() {
+export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
+  const dynClassBoldness = email.isRead ? "400" : "700";
+
+  function onMouseEnter(e) {
+    setIsHovered(true);
+  }
+
+  function onMouseLeave(e) {
+    setIsHovered(false);
+  }
+
+  function getDayMonth() {
     const timeStamp = email.sentAt;
     const date = new Date(timeStamp);
-    return date.toDateString();
+    const day = date.getDate();
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const month = months[date.getMonth()];
+    return `${day}/${month}`;
   }
 
   return (
-    <Link
-      style={{ backgroundColor: dynClassColor }}
-      onClick={() => MarkAsRead(email)}
-      className="email-preview flex full-grow"
-      to={`/email/${email.id}`}
+    <article
+      className="email-preview"
+      style={{
+        backgroundColor: dynClassColor,
+        fontWeight: dynClassBoldness,
+        // ...hoverStyles,
+      }}
+      onClick={() => markAsRead(email)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
-      <div className="w25">
-        <CustomTag>{email.from}</CustomTag>
+      <div
+        className="star"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleStar(email);
+        }}
+      >
+        {email.isStarred === false ? (
+          <FontAwesomeIcon icon={shallowStar} />
+        ) : (
+          <FontAwesomeIcon icon={solidStar} style={{ color: "#fbff00" }} />
+        )}
       </div>
-      <div className="w25">
-        <CustomTag>{email.subject}</CustomTag>
-      </div>
-      <div className="w25">
-        <p>
-          {email.body && email.body.length > 20
-            ? `${email.body.slice(0, 38)}...`
-            : email.body}
-        </p>
-      </div>
-      <div className="w25">
-        <span className="m40l">{getDate()}</span>
-      </div>
-    </Link>
+
+      <div className="email-preview-from">{email.from}</div>
+      <div className="email-preview-subject">{email.subject} - </div>
+      <p className="email-preview-body">{email.body}</p>
+      {/*  When is Hovered = False */}
+      {!isHovered && (
+        <span className="email-preview-date">{getDayMonth()}</span>
+      )}
+      {/* When is Hovered = True */}
+      {isHovered && (
+        <button
+          className="email-preview-remove"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onRemove(email.id);
+          }}
+        >
+          <FontAwesomeIcon icon={faTrashCan} />
+        </button>
+      )}
+    </article>
   );
 }
 // id: "e101",

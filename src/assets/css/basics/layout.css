@@ -18,22 +18,30 @@
 .email-index-grid-container {
   display: grid;
   grid-template-columns: 256px 1fr 30px;
-  grid-template-rows: 65px 835px 20px;
+  grid-template-rows: 65px 1fr auto;
   background-color: #c9d6ff2c;
-  overflow: hidden;
-}
-.index-nav {
-  grid-area: 1/1/1/-1;
+  height: 100%;
 }
 
-.email-inbox {
-  grid-area: 2/2;
+.index-nav-title {
+  grid-area: 1 / 1 / span 1 / span 1;
+  align-self: center;
+}
+
+.index-nav-filter {
+  grid-area: 1 / 2 / span 1 / span 1;
+}
+
+.email-index-main {
+  grid-area: 2 / 2 / span 1 / span 1;
   overflow: auto;
+  background-color: white;
+  border-radius: 20px;
 }
 
 .aside {
-  grid-area: 2/1;
+  grid-area: 2 / 1 / span 1 / span 1;
 }
 .footer {
-  grid-area: 3/2;
+  grid-area: 3 / 2 / span 1 / span 1;
 }

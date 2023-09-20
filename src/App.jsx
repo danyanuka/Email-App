@@ -17,15 +17,11 @@ import { Aside } from "./cmps/Aside";
 export function App() {
   return (
     <Router>
-      <section>
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/email" element={<EmailIndex />} />
-            <Route path="/email/:emailId" element={<EmailDetails />} />
-          </Routes>
-        </main>
-      </section>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/email" element={<EmailIndex />} />
+        <Route path="/email/:emailId" element={<EmailDetails />} />
+      </Routes>
     </Router>
   );
 }

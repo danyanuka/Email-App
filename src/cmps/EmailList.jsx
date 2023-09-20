@@ -1,31 +1,21 @@
 import { EmailPreview } from "./EmailPreview";
+import { Link } from "react-router-dom";
 
-export function EmailList({ emails, onRemove, MarkAsRead }) {
+export function EmailList({ emails, onRemove, markAsRead, toggleStar }) {
   return (
     <ul className="email-ul">
       {emails.map((email) => (
-        <li className="email-li flex" key={email.id}>
-          <EmailPreview email={email} MarkAsRead={MarkAsRead} />
-
-          <button
-            className="simple-button removeBtn"
-            onClick={() => {
-              onRemove(email.id);
-            }}
-          >
-            X
-          </button>
+        <li className="email-li" key={email.id}>
+          <Link to={`/email/${email.id}`}>
+            <EmailPreview
+              onRemove={onRemove}
+              email={email}
+              markAsRead={markAsRead}
+              toggleStar={toggleStar}
+            />
+          </Link>
         </li>
       ))}
     </ul>
   );
 }
-// id: "e101",
-//         subject: "Miss you!",
-//         body: "Would love to catch up sometimes",
-//         isRead: false,
-//         isStarred: false,
-//         sentAt: 1551133930594,
-//         removedAt: null, //for later use
-//         from: "momo@momo.com",
-//         to: "user@appsus.com",
