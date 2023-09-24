@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { emailService } from "../services/email.service";
 import { EmailList } from "../cmps/EmailList";
 import { ComposeEmail } from "../cmps/ComposeEmail";
-import { EmailFilter } from "../cmps/EmailFilter";
 import { IndexNav } from "../cmps/IndexNav";
 import { Aside } from "../cmps/Aside";
 
@@ -14,8 +19,22 @@ export function EmailIndex() {
     subject: "",
     isStarred: false,
     sentAt: null,
+    tab: "inbox",
   });
-  const [isComposeModal, setComposeModal] = useState(false);
+
+  const [queryParams, setQueryParams] = useSearchParams();
+
+  useEffect(() => {
+    const tab = queryParams.get("tab");
+    if (params.emailId) {
+      setFilterBy({ ...filterBy, tab: "inbox" });
+      return;
+    }
+    setFilterBy({ ...filterBy, tab });
+  }, [queryParams]);
+  // const [isComposeModal, setComposeModal] = useState(false);
+  const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadEmails();
@@ -50,9 +69,9 @@ export function EmailIndex() {
     }
   }
 
-  async function onAdd(email) {
+  async function onAddEmail(email) {
     const newEmail = await emailService.save(email);
-    setEmails((prevEmails) => [...prevEmails, newEmail]);
+    navigate("/email?tab=inbox");
   }
 
   async function markAsRead(emailToMark, eventFrom) {
@@ -90,18 +109,19 @@ export function EmailIndex() {
       <IndexNav filterBy={filterBy} onSetFilter={onSetFilter} />
       {/* ------------------------------------------------------------------------------------- */}
       <section className="email-index-main">
-        <EmailList
-          emails={emails}
-          onRemove={onRemove}
-          markAsRead={markAsRead}
-          toggleStar={toggleStar}
-        />
-        {isComposeModal && (
-          <ComposeEmail setComposeModal={setComposeModal} onAdd={onAdd} />
+        {!params.emailId && (
+          <EmailList
+            emails={emails}
+            onRemove={onRemove}
+            markAsRead={markAsRead}
+            toggleStar={toggleStar}
+          />
         )}
+        <Outlet context={onAddEmail} />
       </section>
+
       {/* ------------------------------------------------------------------------------------- */}
-      <Aside setComposeModal={setComposeModal}></Aside>
+      <Aside />
       {/* ------------------------------------------------------------------------------------- */}
       <footer className="footer">
         <section>robotRights 2023 &copy;</section>

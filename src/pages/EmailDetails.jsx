@@ -29,20 +29,19 @@ export function EmailDetails() {
   console.log("From EmailDetails :", email);
   if (!email) return <div>Loading your Emails...</div>;
   return (
-    <section className="details container">
-      <Link to="/email">
+    <section className="email-details">
+      <Link to="/email?tab=inbox">
         <span> {"<- "} Go Back</span>
       </Link>
 
-      <h1 className="p5">{email.subject}</h1>
+      <h1>{email.subject}</h1>
       <h4>{getDate()}</h4>
 
       <hr></hr>
       <h1>From - {email.from}</h1>
       <h1>To - {`Me : ${email.to}`}</h1>
 
-      <div className="bottom-divider"></div>
-      <h3 className="p5">Email Content :</h3>
+      <h3>Email Content :</h3>
       <p> {email.body}</p>
     </section>
   );

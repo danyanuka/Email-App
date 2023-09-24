@@ -70,3 +70,21 @@
   background-color: rgb(59, 106, 216);
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
 }
+
+/* from Aside.jsx */
+.compose-btn {
+  text-decoration: none !important;
+  color: inherit;
+  background-color: rgb(188, 229, 248);
+  border: none;
+  width: 57%;
+  padding: 18px;
+  margin-inline-start: 8px;
+  border-radius: 15px;
+  font-weight: 500;
+  transition: box-shadow 0.3s ease, transform 0.1s ease;
+}
+.compose-btn:hover {
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}

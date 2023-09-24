@@ -21,19 +21,33 @@ _createEmails();
 
 async function query(filterBy) {
   try {
+    console.log(filterBy);
     let emails = await storageService.query(STORAGE_KEY);
     if (filterBy) {
       const fieldsToSearch = ["body", "subject"];
-      let { isRead, text = "" } = filterBy;
+      let { isRead, text = "", tab = "inbox" } = filterBy;
       if (isRead !== null) {
         emails = emails.filter((email) => email.isRead === isRead);
       }
+
       emails = emails.filter((email) =>
         fieldsToSearch.some((field) =>
           email[field].toLowerCase().includes(text.toLowerCase())
         )
       );
+
+      if (tab === "inbox") {
+        emails = emails.filter((email) => email.to === loggedinUser.email);
+      }
+
+      if (tab === "starred") {
+        emails = emails.filter((email) => email.isStarred === true);
+      }
     }
+
+    // else if (tab === "draft") {
+    //   // senstAt === null
+    // }
 
     return emails;
   } catch (error) {
@@ -111,6 +125,17 @@ function _createEmails() {
         id: "e104",
         subject: "Out of ideas",
         body: "Out of ideas Out of ideas Out of ideas Out of ideas  ",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "looki@momo.com",
+        to: "user@appsus.com",
+      },
+      {
+        id: "e105",
+        subject: "A Long body ",
+        body: "Lets see how a veeeerryyyyyyyyyyyyyyyyyyyyyyyyy long body looks like in the Ui, will there be 3 dots as wanted?  ",
         isRead: false,
         isStarred: false,
         sentAt: 1551133930594,

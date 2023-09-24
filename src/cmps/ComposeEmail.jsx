@@ -1,5 +1,8 @@
 import { useState } from "react";
-export function ComposeEmail({ setComposeModal, onAdd }) {
+import { Link, useOutletContext } from "react-router-dom";
+import { emailService } from "../services/email.service";
+
+export function ComposeEmail() {
   const [email, setEmail] = useState({
     subject: "Not specified",
     body: "Not specified",
@@ -7,18 +10,19 @@ export function ComposeEmail({ setComposeModal, onAdd }) {
     isStarred: false,
     sentAt: 1551133930594,
     removedAt: null,
-    from: "momo@momo.com",
-    to: "user@appsus.com",
+    from: emailService.loggedinUser.email,
+    to: "",
   });
+  const onAddEmail = useOutletContext();
 
   function handleChange(ev) {
     const { value, name } = ev.target;
     setEmail((prevEmail) => ({ ...prevEmail, [name]: value }));
   }
   function onSubmitEmail(ev) {
+    console.log(email);
     ev.preventDefault();
-    onAdd(email);
-    setComposeModal(false);
+    onAddEmail(email);
   }
 
   function handleSubjectKeyPress(ev) {
@@ -32,10 +36,17 @@ export function ComposeEmail({ setComposeModal, onAdd }) {
     <form className="compose-form" onSubmit={onSubmitEmail}>
       <div className="form-head">
         <h1>New Message</h1>
-        <button className="close-btn" onClick={() => setComposeModal(false)}>
+        <Link to="/email" className="close-btn">
           X
-        </button>
+        </Link>
       </div>
+      <input
+        className="form-to"
+        onChange={handleChange}
+        type="email"
+        placeholder="To"
+        name="to"
+      ></input>
       <label htmlFor="subject"></label>
       <input
         className="form-subject"
