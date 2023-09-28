@@ -1,50 +1,36 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 export function Aside() {
   const navigate = useNavigate();
 
-  function onSelectAction(tab) {
-    console.log(tab);
-    navigate(`/email?tab=${tab}`);
-  }
+  const links = ["inbox", "starred", "sent", "draft", "all"];
+  const [searchParmas, setsearchParmas] = useSearchParams({ tab: "" });
+  const tab = searchParmas.get("tab");
+  // function onSelectAction(tab) {
+  //   navigate(`/email/?tab=${tab}`);
+  // }
 
   // mail/compose?tab=inbox
+
   return (
     <aside className="aside">
-      <Link to="/email/compose" className="compose-btn">
+      <Link to={`/email/compose/?tab=${tab}`} className="compose-btn">
         <div>
           <FontAwesomeIcon icon={faPen} style={{ paddingInlineEnd: "13px" }} />
           <span>Compose</span>
         </div>
       </Link>
-      <div className="aside-folders">
-        <button
-          className=" aside-folder-1"
-          onClick={() => onSelectAction("inbox")}
+      {links.map((link, idx) => (
+        <Link
+          className={`aside-folder-${idx + 1}`}
+          key={link}
+          to={`/email/?tab=${link}`}
         >
-          Inbox
-        </button>
-        <button
-          onClick={() => onSelectAction("starred")}
-          className="aside-folder-2"
-        >
-          Starred
-        </button>
-        <button
-          onClick={() => onSelectAction("sent")}
-          className="aside-folder-3"
-        >
-          Sent
-        </button>
-        <button
-          onClick={() => onSelectAction("draft")}
-          className="aside-folder-4"
-        >
-          Draft
-        </button>
-      </div>
+          {link}
+        </Link>
+      ))}
     </aside>
   );
 }

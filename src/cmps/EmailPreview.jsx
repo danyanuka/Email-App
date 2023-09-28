@@ -6,7 +6,7 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
-export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
+export function EmailPreview({ email, markAsRead, onRemoveEmail, toggleStar }) {
   const [isHovered, setIsHovered] = useState(false);
   const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
   const dynClassBoldness = email.isRead ? "400" : "700";
@@ -49,7 +49,9 @@ export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
         fontWeight: dynClassBoldness,
         // ...hoverStyles,
       }}
-      onClick={() => markAsRead(email, false)}
+      onClick={() => {
+        if (email.sentAt) markAsRead(email, false);
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -97,7 +99,7 @@ export function EmailPreview({ email, markAsRead, onRemove, toggleStar }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              onRemove(email.id);
+              onRemoveEmail(email.id);
             }}
           >
             <FontAwesomeIcon icon={faTrashCan} />

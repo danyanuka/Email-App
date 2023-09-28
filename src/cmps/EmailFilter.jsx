@@ -9,17 +9,35 @@ export function EmailFilter({ onSetFilter, filterBy }) {
     onSetFilter(filterByToEdit);
   }, [filterByToEdit]);
 
-  function handleChange(ev) {
-    let { value, name, type } = ev.target;
-    if (type === "select-one") {
-      value = JSON.parse(value);
+  // function handleChange(ev) {
+  //   let { value, name, type } = ev.target;
+  //   if (type === "select-one") {
+  //     value = JSON.parse(value);
+  //   }
+  //   setfilterByToEdit((prevFilter) => ({ ...prevFilter, [name]: value }));
+  // }
+
+  function handleChange({ target }) {
+    let { name: field, value, type } = target;
+    switch (type) {
+      case "number":
+      case "range":
+        value = +value || "";
+        break;
+      case "select-one":
+        value = JSON.parse(value);
+        break;
+      case "checkbox":
+        value = target.checked;
+      default:
+        break;
     }
-    setfilterByToEdit((prevFilter) => ({ ...prevFilter, [name]: value }));
+    setfilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }));
   }
 
   function onSubmitFilter(ev) {
     ev.preventDefault();
-
+    console.log("filterby", filterBy);
     onSetFilter(filterByToEdit);
   }
 

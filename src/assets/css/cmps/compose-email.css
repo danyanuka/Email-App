@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 60%;
-  left: 80%;
-  transform: translate(-50%, -50%);
+  bottom: 20px;
+  right: 20px;
   z-index: 999;
   background: white; /* Background color */
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3); /* Add a shadow for depth */
@@ -87,4 +86,14 @@
 .compose-btn:hover {
   box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
+}
+
+.form-to {
+  outline: none;
+  border: none;
+  height: 35px;
+  border-bottom: 1px solid #d3cccc;
+  margin: 0 20px 0px 20px;
+  padding: 5px 0 5px 0;
+  font-size: medium;
 }

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams, useOutletContext } from "react-router-dom";
 import { emailService } from "../services/email.service";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 export function EmailDetails() {
   const [email, setEmail] = useState(null);
   const params = useParams();
+  const { tab } = useOutletContext();
 
+  // const [queryParams, setQueryParams] = useSearchParams({ tab: "" });
+  // const tab = queryParams.get("tab");
   useEffect(() => {
     loadEmail();
   }, []);
@@ -30,7 +33,7 @@ export function EmailDetails() {
   if (!email) return <div>Loading your Emails...</div>;
   return (
     <section className="email-details">
-      <Link to="/email?tab=inbox">
+      <Link to={`/email?tab=${tab}`}>
         <span> {"<- "} Go Back</span>
       </Link>
 
