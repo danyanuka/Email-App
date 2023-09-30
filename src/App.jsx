@@ -4,6 +4,8 @@ import { AboutUs } from "./pages/AboutUs";
 import { EmailIndex } from "./pages/EmailIndex";
 import { EmailDetails } from "./pages/EmailDetails";
 import { ComposeEmail } from "./cmps/ComposeEmail";
+import { UserMsg } from "./cmps/UserMsg";
+import { eventBusService } from "./services/event-bus-service";
 
 export function App() {
   return (
@@ -15,6 +17,7 @@ export function App() {
           <Route path="/email/compose/:emailId?" element={<ComposeEmail />} />
         </Route>
       </Routes>
+      <UserMsg />
     </Router>
   );
 }

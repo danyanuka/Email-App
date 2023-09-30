@@ -9,6 +9,7 @@ import { emailService } from "../services/email.service";
 import { EmailList } from "../cmps/EmailList";
 import { IndexNav } from "../cmps/IndexNav";
 import { Aside } from "../cmps/Aside";
+import { eventBusService, showUserMsg } from "../services/event-bus-service";
 
 export function EmailIndex() {
   const [emails, setEmails] = useState(null);
@@ -46,6 +47,13 @@ export function EmailIndex() {
       setEmails((prevEmails) =>
         prevEmails.filter((email) => emailId !== email.id)
       );
+      // eventBusService.emit("show-user-msg", {
+      //   type: "success",
+      //   txt: "Email Removed",
+
+      // });
+
+      showUserMsg({ type: "success", txt: "Email Removed" });
     } catch (error) {
       console.log("Email cannot be deleted ", error);
     }
@@ -54,13 +62,14 @@ export function EmailIndex() {
   async function onAddEmail(email) {
     try {
       const newEmail = await emailService.save(email);
+      showUserMsg({ type: "success", txt: "Email Added" });
       // if (filterBy.tab === "sent")
       // setEmails((prevEmails) => [newEmail, ...prevEmails]); works but adds any email to inbox until refresh, when draft is sent weird error.
       loadEmails();
       {
         /*  works but doesnt trigger a re render, needs a refresh  */
       }
-      console.log("from onAdd", filterBy);
+
       navigate(`/email/?tab=${filterBy.tab}`);
       {
         /*  works but doesnt trigger a re render, needs a refresh  */
@@ -105,8 +114,7 @@ export function EmailIndex() {
   // Conditional render - IF theres data, render it
 
   if (!emails) return <div>Loading your Emails...</div>;
-  console.log("from index", emails);
-  console.log("from index", filterBy);
+
   const { isRead, text } = filterBy;
   return (
     <div className="email-index-grid-container">
