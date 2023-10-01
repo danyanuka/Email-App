@@ -6,6 +6,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { emailService } from "../services/email.service";
+import { utilService } from "../services/util.service";
 import { EmailList } from "../cmps/EmailList";
 import { IndexNav } from "../cmps/IndexNav";
 import { Aside } from "../cmps/Aside";
@@ -35,6 +36,7 @@ export function EmailIndex() {
   async function loadEmails() {
     try {
       const emails = await emailService.query(filterBy);
+
       setEmails(emails);
     } catch (err) {
       console.error("Had issues loading Emails", err);
@@ -47,11 +49,6 @@ export function EmailIndex() {
       setEmails((prevEmails) =>
         prevEmails.filter((email) => emailId !== email.id)
       );
-      // eventBusService.emit("show-user-msg", {
-      //   type: "success",
-      //   txt: "Email Removed",
-
-      // });
 
       showUserMsg({ type: "success", txt: "Email Removed" });
     } catch (error) {
@@ -61,6 +58,7 @@ export function EmailIndex() {
 
   async function onAddEmail(email) {
     try {
+      email.sentAt = utilService.unixNow();
       const newEmail = await emailService.save(email);
       showUserMsg({ type: "success", txt: "Email Added" });
       // if (filterBy.tab === "sent")
@@ -114,7 +112,6 @@ export function EmailIndex() {
   // Conditional render - IF theres data, render it
 
   if (!emails) return <div>Loading your Emails...</div>;
-
   const { isRead, text } = filterBy;
   return (
     <div className="email-index-grid-container">

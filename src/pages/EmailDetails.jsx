@@ -8,8 +8,6 @@ export function EmailDetails() {
   const params = useParams();
   const { tab } = useOutletContext();
 
-  // const [queryParams, setQueryParams] = useSearchParams({ tab: "" });
-  // const tab = queryParams.get("tab");
   useEffect(() => {
     loadEmail();
   }, []);

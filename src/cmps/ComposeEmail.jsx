@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Link,
   useOutletContext,
@@ -12,16 +12,28 @@ export function ComposeEmail() {
   const [email, setEmail] = useState(emailService.createEmail());
   const { onAddEmail, tab } = useOutletContext();
   const { emailId } = useParams();
+  const debounceTimeout = useRef(null);
+  // const [title, setTitle] = useState("New Messege");
 
   useEffect(() => {
     loadDraft();
-  }, []);
+  }, [email]);
+
+  useEffect(() => {
+    clearTimeout(debounceTimeout.current);
+    debounceTimeout.current = setTimeout(draftAutoSave, 5000);
+    return () => clearTimeout(debounceTimeout.current);
+  }, [email]);
 
   async function loadDraft() {
-    if (emailId) {
-      const email = await emailService.getById(emailId);
-      console.log("email from loadDraft", email);
-      setEmail(email);
+    try {
+      if (emailId) {
+        const email = await emailService.getById(emailId);
+        setEmail(email);
+        // setTitle(email.subject == "" ? "New Message" : email.subject);
+      }
+    } catch (error) {
+      console.log("Couldnt load draft", error);
     }
   }
 
@@ -41,6 +53,9 @@ export function ComposeEmail() {
         break;
     }
     setEmail((prevEmail) => ({ ...prevEmail, [field]: value }));
+    // if (field == "subject") {
+    //   setTitle(value == "" ? "New Message" : value);
+    // }
   }
 
   function onSubmitEmail(ev) {
@@ -54,10 +69,22 @@ export function ComposeEmail() {
     }
   }
 
+  async function draftAutoSave() {
+    try {
+      console.log("from compose ", email);
+      const emailToSave = await emailService.save(email);
+      console.log("emailToSave", emailToSave);
+      setEmail(emailToSave);
+      // setTitle("Draft Saved");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <form className="compose-form" onSubmit={onSubmitEmail}>
       <div className="form-head">
-        <h1>New Message</h1>
+        <h3>New Messege</h3>
         <Link to={`/email/?tab=${tab}`} className="close-btn">
           X
         </Link>

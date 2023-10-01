@@ -25,7 +25,7 @@ function get(entityType, entityId) {
 function post(entityType, newEntity) {
   newEntity = { ...newEntity };
   newEntity.id = _makeId();
-  console.log("from async storage", newEntity);
+
   return query(entityType).then((entities) => {
     entities.unshift(newEntity);
     _save(entityType, entities);

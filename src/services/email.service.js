@@ -39,7 +39,9 @@ async function query(filterBy) {
     }
 
     if (tab === "sent") {
-      emails = emails.filter((email) => email.from === loggedinUser.email);
+      emails = emails.filter(
+        (email) => email.from === loggedinUser.email && email.sentAt !== null
+      );
     }
 
     if (tab === "draft") {
@@ -50,6 +52,7 @@ async function query(filterBy) {
       emails = emails.filter((email) => email.sentAt !== null);
     }
     // body and subject filter by text
+
     emails = emails.filter((email) =>
       fieldsToSearch.some((field) =>
         email[field].toLowerCase().includes(text.toLowerCase())
@@ -76,9 +79,10 @@ function remove(id) {
 
 function save(emailToSave) {
   if (emailToSave.id) {
-    emailToSave.sentAt = utilService.unixNow();
+    console.log("2st put", emailToSave);
     return storageService.put(STORAGE_KEY, emailToSave);
   } else {
+    console.log("1st post", emailToSave);
     return storageService.post(STORAGE_KEY, emailToSave);
   }
 }
@@ -88,7 +92,7 @@ function createEmail(
   body = "",
   isRead = false,
   isStarred = false,
-  sentAt = utilService.unixNow(),
+  sentAt = null,
   removedAt = null,
   from = loggedinUser.email,
   to = ""
