@@ -27,8 +27,7 @@ export function EmailDetails() {
     return date.toLocaleString();
   }
 
-  console.log("From EmailDetails :", email);
-  if (!email) return <div>Loading your Emails...</div>;
+  if (!email) return <div>Loading your Email...</div>;
   return (
     <section className="email-details">
       <Link to={`/email?tab=${tab}`}>
@@ -40,7 +39,7 @@ export function EmailDetails() {
 
       <hr></hr>
       <h1>From - {email.from}</h1>
-      <h1>To - {`Me : ${email.to}`}</h1>
+      <h1>To - {email.to}</h1>
 
       <h3>Email Content :</h3>
       <p> {email.body}</p>

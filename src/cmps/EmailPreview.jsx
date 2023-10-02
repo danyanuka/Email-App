@@ -6,10 +6,30 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
-export function EmailPreview({ email, markAsRead, onRemoveEmail, toggleStar }) {
+export function EmailPreview({
+  email,
+  onUpdateEmail,
+  //  markAsRead,
+  onRemoveEmail,
+  //  toggleStar
+}) {
   const [isHovered, setIsHovered] = useState(false);
-  const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
-  const dynClassBoldness = email.isRead ? "400" : "700";
+
+  function markAsRead(eventFrom) {
+    const emailToUpdate = {
+      ...email,
+      isRead: !eventFrom ? true : !email.isRead,
+    };
+    onUpdateEmail(emailToUpdate);
+  }
+
+  function toggleStar() {
+    const emailToUpdate = {
+      ...email,
+      isStarred: !email.isStarred,
+    };
+    onUpdateEmail(emailToUpdate);
+  }
 
   function onMouseEnter(e) {
     setIsHovered(true);
@@ -41,6 +61,8 @@ export function EmailPreview({ email, markAsRead, onRemoveEmail, toggleStar }) {
     return `${day}/${month}`;
   }
 
+  const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
+  const dynClassBoldness = email.isRead ? "400" : "700";
   return (
     <article
       className="email-preview"
@@ -50,7 +72,7 @@ export function EmailPreview({ email, markAsRead, onRemoveEmail, toggleStar }) {
         // ...hoverStyles,
       }}
       onClick={() => {
-        if (email.sentAt) markAsRead(email, false);
+        if (email.sentAt) markAsRead(false);
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -63,10 +85,10 @@ export function EmailPreview({ email, markAsRead, onRemoveEmail, toggleStar }) {
           toggleStar(email);
         }}
       >
-        {email.isStarred === false ? (
-          <FontAwesomeIcon icon={shallowStar} />
-        ) : (
+        {email.isStarred ? (
           <FontAwesomeIcon icon={solidStar} style={{ color: "#fbff00" }} />
+        ) : (
+          <FontAwesomeIcon icon={shallowStar} />
         )}
       </div>
 
@@ -85,7 +107,7 @@ export function EmailPreview({ email, markAsRead, onRemoveEmail, toggleStar }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              markAsRead(email, true);
+              markAsRead(true);
             }}
           >
             {email.isRead === false ? (

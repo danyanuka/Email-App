@@ -16,6 +16,9 @@
 .email-preview:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+/* .email-preview:hover .btns{
+  display: none;
+} */
 
 .star {
   grid-area: 1 / 1 / span 1 / span 1;

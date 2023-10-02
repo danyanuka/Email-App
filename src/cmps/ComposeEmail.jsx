@@ -17,7 +17,7 @@ export function ComposeEmail() {
 
   useEffect(() => {
     loadDraft();
-  }, [email]);
+  }, []);
 
   useEffect(() => {
     clearTimeout(debounceTimeout.current);
@@ -71,10 +71,11 @@ export function ComposeEmail() {
 
   async function draftAutoSave() {
     try {
-      console.log("from compose ", email);
       const emailToSave = await emailService.save(email);
-      console.log("emailToSave", emailToSave);
-      setEmail(emailToSave);
+
+      if (!email.id) {
+        setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
+      }
       // setTitle("Draft Saved");
     } catch (error) {
       console.log(error);
@@ -96,7 +97,7 @@ export function ComposeEmail() {
         placeholder="To"
         name="to"
         value={email.to}
-      ></input>
+      />
       <label htmlFor="subject"></label>
       <input
         className="form-subject"

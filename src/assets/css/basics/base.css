@@ -45,10 +45,6 @@ a {
   cursor: pointer;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 button {
   font-family: inherit;
   cursor: pointer;

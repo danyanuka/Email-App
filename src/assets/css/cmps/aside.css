@@ -1,0 +1,41 @@
+.tabs-container {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  /* margin-top: 1rem; */
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  padding: 8px 30px;
+  transition: background-color 0.1s ease;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  &:hover {
+    background-color: #e0e0e07e;
+  }
+}
+
+.active-tab {
+  display: flex;
+  align-items: center;
+  padding: 8px 25px;
+  background-color: #67b3f652;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  font-weight: 500;
+}
+
+.unread-emails {
+  background-color: transparent;
+  color: #2e2c2c;
+  font-size: 12px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  margin-left: auto;
+}

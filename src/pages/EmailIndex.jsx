@@ -23,6 +23,7 @@ export function EmailIndex() {
   });
   const params = useParams();
   const navigate = useNavigate();
+  const [unreadEmails, setUnreadEmails] = useState(0);
 
   // Sets the Tab to filterBy and triggers
   useEffect(() => {
@@ -32,6 +33,10 @@ export function EmailIndex() {
   useEffect(() => {
     loadEmails();
   }, [filterBy]);
+
+  useEffect(() => {
+    unreadCount();
+  }, [emails]);
 
   async function loadEmails() {
     try {
@@ -61,17 +66,10 @@ export function EmailIndex() {
       email.sentAt = utilService.unixNow();
       const newEmail = await emailService.save(email);
       showUserMsg({ type: "success", txt: "Email Added" });
-      // if (filterBy.tab === "sent")
-      // setEmails((prevEmails) => [newEmail, ...prevEmails]); works but adds any email to inbox until refresh, when draft is sent weird error.
-      loadEmails();
-      {
-        /*  works but doesnt trigger a re render, needs a refresh  */
+      if (filterBy.tab === "sent" && "draft") {
+        setEmails((prevEmails) => [newEmail, ...prevEmails]);
       }
-
       navigate(`/email/?tab=${filterBy.tab}`);
-      {
-        /*  works but doesnt trigger a re render, needs a refresh  */
-      }
     } catch (err) {
       console.log("Had issues adding Email,", err);
     }
@@ -82,60 +80,83 @@ export function EmailIndex() {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...fieldToUpdate }));
   }
 
-  async function markAsRead(emailToMark, eventFrom) {
-    try {
-      if (eventFrom === false) emailToMark.isRead = true;
-      else emailToMark.isRead = !emailToMark.isRead;
-      await emailService.save(emailToMark);
-
-      setEmails((prevEmails) =>
-        prevEmails.map((email) =>
-          email.id === emailToMark.id ? emailToMark : email
-        )
-      );
-    } catch (error) {}
+  // updating Starred and read properties
+  async function onUpdateEmail(email) {
+    const updatedEmail = await emailService.save(email);
+    setEmails((prevEmail) =>
+      prevEmail.map((email) =>
+        email.id === updatedEmail.id ? updatedEmail : email
+      )
+    );
   }
 
-  async function toggleStar(emailToStar) {
-    try {
-      emailToStar.isStarred = !emailToStar.isStarred;
-      await emailService.save(emailToStar);
+  //  checks the number of unread emails
+  function unreadCount() {
+    if (!emails || filterBy.tab !== "inbox") return;
+    const propertyToCheck = "isRead";
+    const count = emails.reduce((accumulator, currentEmaill) => {
+      if (currentEmaill[propertyToCheck] === false) {
+        return accumulator + 1;
+      }
+      return accumulator;
+    }, 0);
 
-      setEmails((prevEmails) =>
-        prevEmails.map((email) =>
-          email.id === emailToStar.id ? emailToStar : email
-        )
-      );
-    } catch (error) {}
+    setUnreadEmails(count);
   }
-
-  // Conditional render - IF theres data, render it
 
   if (!emails) return <div>Loading your Emails...</div>;
   const { isRead, text } = filterBy;
   return (
     <div className="email-index-grid-container">
-      {/* ------------------------------------------------------------------------------------- */}
       <IndexNav filterBy={{ isRead, text }} onSetFilter={onSetFilter} />
-      {/* ------------------------------------------------------------------------------------- */}
+
       <section className="email-index-main">
         {!params.emailId && (
           <EmailList
             tab={filterBy.tab}
             emails={emails}
+            onUpdateEmail={onUpdateEmail}
             onRemoveEmail={onRemoveEmail}
-            markAsRead={markAsRead}
-            toggleStar={toggleStar}
+            // markAsRead={markAsRead}
+            // toggleStar={toggleStar}
           />
         )}
         <Outlet context={{ onAddEmail, tab: filterBy.tab }} />
       </section>
-      {/* ------------------------------------------------------------------------------------- */}
-      <Aside />
-      {/* ------------------------------------------------------------------------------------- */}
+
+      <Aside tab={filterBy.tab} unreadEmails={unreadEmails} />
+
       <footer className="footer">
         <section>robotRights 2023 &copy;</section>
       </footer>
     </div>
   );
 }
+
+// if theres problems with starred and read/unread thats the older solution
+// async function markAsRead(emailToMark, eventFrom) {
+//   try {
+//     if (eventFrom === false) emailToMark.isRead = true;
+//     else emailToMark.isRead = !emailToMark.isRead;
+//     await emailService.save(emailToMark);
+
+//     setEmails((prevEmails) =>
+//       prevEmails.map((email) =>
+//         email.id === emailToMark.id ? emailToMark : email
+//       )
+//     );
+//   } catch (error) {}
+// }
+
+// async function toggleStar(emailToStar) {
+//   try {
+//     emailToStar.isStarred = !emailToStar.isStarred;
+//     await emailService.save(emailToStar);
+
+//     setEmails((prevEmails) =>
+//       prevEmails.map((email) =>
+//         email.id === emailToStar.id ? emailToStar : email
+//       )
+//     );
+//   } catch (error) {}
+// }

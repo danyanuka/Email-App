@@ -1,18 +1,9 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 
-export function Aside() {
-  const navigate = useNavigate();
-
-  const links = ["inbox", "starred", "sent", "draft", "all"];
-  const [searchParmas, setsearchParmas] = useSearchParams({ tab: "" });
-  const tab = searchParmas.get("tab");
-  // function onSelectAction(tab) {
-  //   navigate(`/email/?tab=${tab}`);
-  // }
-
-  // mail/compose?tab=inbox
+export function Aside({ unreadEmails, tab }) {
+  const links = ["inbox", "starred", "sent", "draft", "all", "trash"];
 
   return (
     <aside className="aside">
@@ -22,15 +13,22 @@ export function Aside() {
           <span>Compose</span>
         </div>
       </Link>
-      {links.map((link, idx) => (
-        <Link
-          className={`aside-folder-${idx + 1}`}
-          key={link}
-          to={`/email/?tab=${link}`}
-        >
-          {link}
-        </Link>
-      ))}
+
+      {/* Tabs */}
+      <div className="tabs-container">
+        {links.map((link, idx) => (
+          <Link
+            to={`/email/?tab=${link}`}
+            className={` ${link === tab ? "active-tab" : "tab"}`}
+            key={link}
+          >
+            {link}
+            {link === "inbox" && (
+              <span className="unread-emails">{unreadEmails}</span>
+            )}
+          </Link>
+        ))}
+      </div>
     </aside>
   );
 }

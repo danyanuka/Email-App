@@ -51,6 +51,10 @@ async function query(filterBy) {
     if (tab === "all") {
       emails = emails.filter((email) => email.sentAt !== null);
     }
+
+    if (tab === "trash") {
+      emails = emails.filter((email) => email.removedAt !== null);
+    }
     // body and subject filter by text
 
     emails = emails.filter((email) =>
