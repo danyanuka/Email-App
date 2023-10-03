@@ -13,10 +13,11 @@ export const emailService = {
   getById,
   createEmail,
   loggedinUser,
+  countUnreadEmails,
 };
 
 const STORAGE_KEY = "emails";
-
+countUnreadEmails();
 _createEmails();
 
 async function query(filterBy) {
@@ -70,6 +71,27 @@ async function query(filterBy) {
     return emails;
   } catch (error) {
     console.error(error);
+  }
+}
+
+async function countUnreadEmails() {
+  try {
+    const emails = await storageService.query(STORAGE_KEY);
+    const emailsFromInbox = emails.filter((email) => {
+      return email.to === loggedinUser.email && email.sentAt !== null;
+    });
+
+    const propertyToCheck = "isRead";
+    const count = emailsFromInbox.reduce((accumulator, currentEmaill) => {
+      if (currentEmaill[propertyToCheck] === false) {
+        return accumulator + 1;
+      }
+      return accumulator;
+    }, 0);
+
+    return count;
+  } catch (error) {
+    console.log("Could not count unread messeges");
   }
 }
 

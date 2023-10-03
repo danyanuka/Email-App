@@ -5,29 +5,32 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+// services
 import { emailService } from "../services/email.service";
 import { utilService } from "../services/util.service";
+import { showUserMsg } from "../services/event-bus-service";
+// comps
 import { EmailList } from "../cmps/EmailList";
 import { IndexNav } from "../cmps/IndexNav";
 import { Aside } from "../cmps/Aside";
-import { eventBusService, showUserMsg } from "../services/event-bus-service";
 
 export function EmailIndex() {
   const [emails, setEmails] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams({ tab: "" });
-  const tab = searchParams.get("tab");
+  const [unreadEmailsCount, setUnreadEmailsCount] = useState(0);
   const [filterBy, setFilterBy] = useState({
     isRead: null,
     text: "",
     tab: "",
   });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tab = searchParams.get("tab");
+
   const params = useParams();
   const navigate = useNavigate();
-  const [unreadEmails, setUnreadEmails] = useState(0);
 
   // Sets the Tab to filterBy and triggers
   useEffect(() => {
-    setFilterBy({ ...filterBy, tab });
+    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, tab }));
   }, [searchParams]);
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export function EmailIndex() {
   }, [filterBy]);
 
   useEffect(() => {
-    unreadCount();
+    loadSetUnreadCount();
   }, [emails]);
 
   async function loadEmails() {
@@ -46,6 +49,20 @@ export function EmailIndex() {
     } catch (err) {
       console.error("Had issues loading Emails", err);
     }
+  }
+
+  async function loadSetUnreadCount() {
+    try {
+      const count = await emailService.countUnreadEmails();
+      setUnreadEmailsCount(count);
+    } catch (error) {
+      console.log("Couldnt load unread emails count", error);
+    }
+  }
+
+  // Setting the State of the global filter
+  function onSetFilter(fieldToUpdate) {
+    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...fieldToUpdate }));
   }
 
   async function onRemoveEmail(emailId) {
@@ -61,23 +78,25 @@ export function EmailIndex() {
     }
   }
 
+  // problems with the draft rendering! WIP
   async function onAddEmail(email) {
     try {
       email.sentAt = utilService.unixNow();
       const newEmail = await emailService.save(email);
-      showUserMsg({ type: "success", txt: "Email Added" });
-      if (filterBy.tab === "sent" && "draft") {
+      showUserMsg({ type: "success", txt: "Email Sent" });
+
+      if (filterBy.tab === "sent") {
         setEmails((prevEmails) => [newEmail, ...prevEmails]);
+      }
+      if (filterBy.tab === "draft") {
+        setEmails((prevEmails) =>
+          prevEmails.filter((prevEmail) => prevEmail.id !== newEmail.id)
+        );
       }
       navigate(`/email/?tab=${filterBy.tab}`);
     } catch (err) {
       console.log("Had issues adding Email,", err);
     }
-  }
-
-  // Setting the State of the global filter
-  function onSetFilter(fieldToUpdate) {
-    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...fieldToUpdate }));
   }
 
   // updating Starred and read properties
@@ -88,20 +107,6 @@ export function EmailIndex() {
         email.id === updatedEmail.id ? updatedEmail : email
       )
     );
-  }
-
-  //  checks the number of unread emails
-  function unreadCount() {
-    if (!emails || filterBy.tab !== "inbox") return;
-    const propertyToCheck = "isRead";
-    const count = emails.reduce((accumulator, currentEmaill) => {
-      if (currentEmaill[propertyToCheck] === false) {
-        return accumulator + 1;
-      }
-      return accumulator;
-    }, 0);
-
-    setUnreadEmails(count);
   }
 
   if (!emails) return <div>Loading your Emails...</div>;
@@ -117,14 +122,12 @@ export function EmailIndex() {
             emails={emails}
             onUpdateEmail={onUpdateEmail}
             onRemoveEmail={onRemoveEmail}
-            // markAsRead={markAsRead}
-            // toggleStar={toggleStar}
           />
         )}
         <Outlet context={{ onAddEmail, tab: filterBy.tab }} />
       </section>
 
-      <Aside tab={filterBy.tab} unreadEmails={unreadEmails} />
+      <Aside tab={filterBy.tab} unreadEmailsCount={unreadEmailsCount} />
 
       <footer className="footer">
         <section>robotRights 2023 &copy;</section>

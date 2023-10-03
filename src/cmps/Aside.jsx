@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 
-export function Aside({ unreadEmails, tab }) {
+export function Aside({ tab, unreadEmailsCount }) {
   const links = ["inbox", "starred", "sent", "draft", "all", "trash"];
 
   return (
@@ -24,7 +24,7 @@ export function Aside({ unreadEmails, tab }) {
           >
             {link}
             {link === "inbox" && (
-              <span className="unread-emails">{unreadEmails}</span>
+              <span className="unread-emails">{unreadEmailsCount}</span>
             )}
           </Link>
         ))}
