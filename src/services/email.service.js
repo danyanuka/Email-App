@@ -14,6 +14,7 @@ export const emailService = {
   createEmail,
   loggedinUser,
   countUnreadEmails,
+  filterBy,
 };
 
 const STORAGE_KEY = "emails";
@@ -132,6 +133,14 @@ function createEmail(
     removedAt,
     from,
     to,
+  };
+}
+
+function filterBy(isRead = null, text = "", tab = "") {
+  return {
+    isRead,
+    text,
+    tab,
   };
 }
 

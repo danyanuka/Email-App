@@ -17,11 +17,7 @@ import { Aside } from "../cmps/Aside";
 export function EmailIndex() {
   const [emails, setEmails] = useState(null);
   const [unreadEmailsCount, setUnreadEmailsCount] = useState(0);
-  const [filterBy, setFilterBy] = useState({
-    isRead: null,
-    text: "",
-    tab: "",
-  });
+  const [filterBy, setFilterBy] = useState(emailService.filterBy());
   const [searchParams, setSearchParams] = useSearchParams();
   const tab = searchParams.get("tab");
 

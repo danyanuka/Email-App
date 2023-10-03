@@ -1,13 +1,9 @@
-.index-nav-filter {
-  display: flex;
-  padding: 10px 0 5px 0;
-}
 .search-bar {
   display: flex;
   align-items: center;
   background-color: #c9d6ff41;
   border-radius: 24px;
-  padding: 25px;
+  padding: 13px;
   width: 600px;
   transition: background-color 0.2s, box-shadow 0.3s;
 }
@@ -23,7 +19,7 @@
 
 .search-bar:focus-within {
   background-color: white;
-  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .index-nav-filter select {

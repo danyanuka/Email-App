@@ -22,6 +22,15 @@
   font-weight: 500;
   font-size: medium;
 }
+.form-to {
+  outline: none;
+  border: none;
+  height: 35px;
+  border-bottom: 1px solid #d3cccc;
+  margin: 0 20px 0px 20px;
+  padding: 5px 0 5px 0;
+  font-size: medium;
+}
 
 .form-subject {
   outline: none;
@@ -77,23 +86,13 @@
   background-color: rgb(188, 229, 248);
   border: none;
   width: 57%;
-  padding: 15px;
+  padding: 19px;
   margin-inline-start: 8px;
   border-radius: 15px;
   font-weight: 500;
   transition: box-shadow 0.3s ease, transform 0.1s ease;
 }
 .compose-btn:hover {
-  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
-}
-
-.form-to {
-  outline: none;
-  border: none;
-  height: 35px;
-  border-bottom: 1px solid #d3cccc;
-  margin: 0 20px 0px 20px;
-  padding: 5px 0 5px 0;
-  font-size: medium;
 }
