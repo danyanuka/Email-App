@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { utilService } from "../services/util.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faStar as shallowStar } from "@fortawesome/free-regular-svg-icons";
@@ -6,13 +7,7 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
-export function EmailPreview({
-  email,
-  onUpdateEmail,
-  //  markAsRead,
-  onRemoveEmail,
-  //  toggleStar
-}) {
+export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
   const [isHovered, setIsHovered] = useState(false);
 
   function markAsRead(eventFrom) {
@@ -37,28 +32,6 @@ export function EmailPreview({
 
   function onMouseLeave(e) {
     setIsHovered(false);
-  }
-
-  function getDayMonth() {
-    const timeStamp = email.sentAt;
-    const date = new Date(timeStamp);
-    const day = date.getDate();
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const month = months[date.getMonth()];
-    return `${day}/${month}`;
   }
 
   const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
@@ -92,12 +65,16 @@ export function EmailPreview({
         )}
       </div>
 
-      <div className="email-preview-from">{email.from}</div>
-      <div className="email-preview-subject">{email.subject} - </div>
+      <DynPreview tab={tab} email={email} />
+      <div className="email-preview-subject">
+        {`${email.subject} - ` || "(No subject)"}
+      </div>
       <p className="email-preview-body">{email.body}</p>
       {/*  When is Hovered = False */}
       {!isHovered && (
-        <span className="email-preview-date">{getDayMonth()}</span>
+        <span className="email-preview-date">
+          {utilService.getDayMonth(email)}
+        </span>
       )}
       {/* When is Hovered = True */}
       {isHovered && (
@@ -130,4 +107,15 @@ export function EmailPreview({
       )}
     </article>
   );
+}
+
+function DynPreview({ tab, email }) {
+  switch (tab) {
+    case "sent":
+      return <div className="email-preview-1st">To: {email.to}</div>;
+    case "draft":
+      return <div className="email-preview-1st draft">Draft</div>;
+    default:
+      return <div className="email-preview-1st">{email.from}</div>;
+  }
 }

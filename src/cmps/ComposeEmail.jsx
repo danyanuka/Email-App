@@ -13,7 +13,7 @@ export function ComposeEmail() {
   const { onAddEmail, tab } = useOutletContext();
   const { emailId } = useParams();
   const debounceTimeout = useRef(null);
-  // const [title, setTitle] = useState("New Messege");
+  const [title, setTitle] = useState("New Messege");
 
   useEffect(() => {
     loadDraft();
@@ -21,7 +21,7 @@ export function ComposeEmail() {
 
   useEffect(() => {
     clearTimeout(debounceTimeout.current);
-    debounceTimeout.current = setTimeout(draftAutoSave, 5000);
+    debounceTimeout.current = setTimeout(draftAutoSave, 4000);
     return () => clearTimeout(debounceTimeout.current);
   }, [email]);
 
@@ -30,7 +30,7 @@ export function ComposeEmail() {
       if (emailId) {
         const email = await emailService.getById(emailId);
         setEmail(email);
-        // setTitle(email.subject == "" ? "New Message" : email.subject);
+        setTitle(email.subject === "" ? "New Message" : email.subject);
       }
     } catch (error) {
       console.log("Couldnt load draft", error);
@@ -53,9 +53,9 @@ export function ComposeEmail() {
         break;
     }
     setEmail((prevEmail) => ({ ...prevEmail, [field]: value }));
-    // if (field == "subject") {
-    //   setTitle(value == "" ? "New Message" : value);
-    // }
+    if (field == "subject") {
+      setTitle(value == "" ? "New Message" : value);
+    }
   }
 
   function onSubmitEmail(ev) {
@@ -72,21 +72,35 @@ export function ComposeEmail() {
   async function draftAutoSave() {
     try {
       const emailToSave = await emailService.save(email);
-
       if (!email.id) {
         setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
       }
-      // setTitle("Draft Saved");
+      setTitle("Draft Saved");
+      setTimeout(() => {
+        setTitle(email.subject ? email.subject : "New Messege");
+      }, 2000);
     } catch (error) {
       console.log(error);
+    }
+  }
+  async function onCloseDraft() {
+    if (email.to !== "" || email.subject !== "") {
+      const emailToSave = await emailService.save(email);
+      if (!email.id) {
+        setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
+      }
     }
   }
 
   return (
     <form className="compose-form" onSubmit={onSubmitEmail}>
       <div className="form-head">
-        <h3>New Messege</h3>
-        <Link to={`/email/?tab=${tab}`} className="close-btn">
+        <h3>{title}</h3>
+        <Link
+          to={`/email/?tab=${tab}`}
+          className="close-btn"
+          onClick={onCloseDraft}
+        >
           X
         </Link>
       </div>

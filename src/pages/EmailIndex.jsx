@@ -19,6 +19,7 @@ export function EmailIndex() {
   const [unreadEmailsCount, setUnreadEmailsCount] = useState(0);
   const [filterBy, setFilterBy] = useState(emailService.filterBy());
   const [searchParams, setSearchParams] = useSearchParams();
+
   const tab = searchParams.get("tab");
 
   const params = useParams();
@@ -40,7 +41,6 @@ export function EmailIndex() {
   async function loadEmails() {
     try {
       const emails = await emailService.query(filterBy);
-
       setEmails(emails);
     } catch (err) {
       console.error("Had issues loading Emails", err);

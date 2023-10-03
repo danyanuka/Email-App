@@ -3,7 +3,30 @@ export const utilService = {
   saveToStorage,
   loadFromStorage,
   unixNow,
+  getDayMonth,
 };
+
+function getDayMonth(email) {
+  const timeStamp = email.sentAt;
+  const date = new Date(timeStamp);
+  const day = date.getDate();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = months[date.getMonth()];
+  return `${day}/${month}`;
+}
 
 function makeId(length = 5) {
   var text = "";

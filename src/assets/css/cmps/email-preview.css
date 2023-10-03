@@ -1,30 +1,27 @@
 /* father of email-ul is email-index-main */
 .email-ul {
-  padding: 30px 10px 10px 0;
+  padding: 30px 5px 0 0;
 }
 
 .email-preview {
-  padding: 10px 10px 10px 10px;
+  padding: 12px 10px 10px 10px;
   border-bottom: solid 1px rgb(198, 211, 211);
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: auto 200px auto 1fr auto;
   align-items: center;
   column-gap: 10px;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.1s ease;
 }
 .email-preview:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px -1px 3px rgba(18, 18, 18, 0.7);
 }
-/* .email-preview:hover .btns{
-  display: none;
-} */
 
 .star {
   grid-area: 1 / 1 / span 1 / span 1;
 }
 
-.email-preview-from {
+.email-preview-1st {
   grid-area: 1 / 2 / span 1 / span 1;
 }
 
@@ -43,6 +40,11 @@
 .email-preview-date {
   grid-area: 1 / 5 / span 1 / span 1;
   font-size: small;
+}
+
+.draft {
+  color: red;
+  font-weight: 400;
 }
 
 .btns {
