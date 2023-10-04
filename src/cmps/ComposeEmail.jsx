@@ -7,13 +7,15 @@ import {
 } from "react-router-dom";
 import { emailService } from "../services/email.service";
 import { useSearchParams } from "react-router-dom";
+import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function ComposeEmail() {
   const [email, setEmail] = useState(emailService.createEmail());
-  const { onAddEmail, tab } = useOutletContext();
+  const [title, setTitle] = useState("New Messege");
+  const { onAddEmail, tab, onUpdateEmail } = useOutletContext();
   const { emailId } = useParams();
   const debounceTimeout = useRef(null);
-  const [title, setTitle] = useState("New Messege");
+  const [composeView, setComposeView] = useState("");
 
   useEffect(() => {
     loadDraft();
@@ -69,40 +71,91 @@ export function ComposeEmail() {
     }
   }
 
-  async function draftAutoSave() {
-    try {
-      const emailToSave = await emailService.save(email);
-      if (!email.id) {
-        setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
-      }
-      setTitle("Draft Saved");
-      setTimeout(() => {
-        setTitle(email.subject ? email.subject : "New Messege");
-      }, 2000);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async function onCloseDraft() {
-    if (email.to !== "" || email.subject !== "") {
-      const emailToSave = await emailService.save(email);
-      if (!email.id) {
-        setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
-      }
+  function viewHandler(view) {
+    setComposeView(view);
+    if (view === "maximize") {
     }
   }
 
+  async function draftAutoSave() {
+    if (email.body !== "" || email.subject !== "")
+      try {
+        if (!email.id) {
+          const emailToSave = await emailService.save(email);
+          setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
+        }
+        if (email.id) {
+          onUpdateEmail(email);
+        }
+        setTitle("Draft Saved");
+        setTimeout(() => {
+          setTitle(email.subject ? email.subject : "New Messege");
+        }, 2000);
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
+  // async function draftAutoSave() {
+  //   try {
+  //     const emailToSave = await emailService.save(email);
+  //     if (!email.id) {
+  //       setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
+  //     }
+  //     onUpdateEmail(emailToSave);
+  //     setTitle("Draft Saved");
+  //     setTimeout(() => {
+  //       setTitle(email.subject ? email.subject : "New Messege");
+  //     }, 2000);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // async function onCloseDraft() {
+  //   if (email.to !== "" || email.subject !== "") {
+  //     const emailToSave = await emailService.save(email);
+  //     if (!email.id) {
+  //       setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
+  //     }
+  //   }
+  // }
+  console.log(composeView);
   return (
-    <form className="compose-form" onSubmit={onSubmitEmail}>
+    <form
+      className={`compose-form ${composeView}`}
+      onSubmit={onSubmitEmail}
+      onClick={() => {
+        // when pressing form head ONLY back to original
+        viewHandler("");
+      }}
+    >
       <div className="form-head">
         <h3>{title}</h3>
-        <Link
-          to={`/email/?tab=${tab}`}
-          className="close-btn"
-          onClick={onCloseDraft}
-        >
-          X
-        </Link>
+        <div className="top-bar-action-btns">
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              viewHandler("minimize");
+            }}
+            className="minimize-btn"
+          ></div>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              // if already maximized, back to original
+              composeView === "maximize"
+                ? viewHandler("")
+                : viewHandler("maximize");
+            }}
+            className="maximize-btn"
+          ></div>
+          <Link
+            to={`/email/?tab=${tab}`}
+            className="close-btn"
+            onClick={draftAutoSave}
+          ></Link>
+        </div>
       </div>
       <input
         className="form-to"
@@ -111,6 +164,9 @@ export function ComposeEmail() {
         placeholder="To"
         name="to"
         value={email.to}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
       />
       <label htmlFor="subject"></label>
       <input
@@ -122,7 +178,10 @@ export function ComposeEmail() {
         placeholder="subject"
         id="subject"
         value={email.subject}
-      ></input>
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      />
 
       <label htmlFor="body"></label>
       <textarea
@@ -133,9 +192,16 @@ export function ComposeEmail() {
         placeholder="Email's Body"
         id="body"
         value={email.body}
-      ></textarea>
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      />
 
-      <button className="submit-btn" type="submit">
+      <button
+        onClick={(e) => ev.stopPropagation()}
+        className="submit-btn"
+        type="submit"
+      >
         Send
       </button>
     </form>

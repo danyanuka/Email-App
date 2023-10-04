@@ -1,5 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
-export default function useEffectUpdate() {
-  return <div></div>;
+export function useEffectUpdate(callBack, dependencies) {
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    callBack();
+  }, dependencies);
 }

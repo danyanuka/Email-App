@@ -1,23 +1,53 @@
+/* Original form Size */
 .compose-form {
   display: flex;
   flex-direction: column;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 0;
+  right: 2rem;
+  height: 32rem;
+  width: 35rem;
   z-index: 999;
   background: white; /* Background color */
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3); /* Add a shadow for depth */
-  border-radius: 10px; /* Rounded corners for style */
+  box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12), 0px 5px 5px -3px rgba(0, 0, 0, 0.2);
 }
 
 .form-head {
   display: flex;
   justify-content: space-between;
-  background-color: rgb(188, 229, 248);
+  background-color: rgb(238 242 255);
   padding: 12px;
-  border-radius: 10px 10px 0 0;
 }
 
+/* topBar (form Head) Btns */
+.top-bar-action-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+}
+.close-btn {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png);
+}
+.close-btn:hover {
+  background-color: #d3cccc73;
+}
+
+.minimize-btn {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png);
+}
+.minimize-btn:hover {
+  background-color: #d3cccc73;
+}
+
+.maximize-btn {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png);
+}
+.maximize-btn:hover {
+  background-color: #d3cccc73;
+}
+/* Form content */
 .compose-form h1 {
   font-weight: 500;
   font-size: medium;
@@ -31,7 +61,6 @@
   padding: 5px 0 5px 0;
   font-size: medium;
 }
-
 .form-subject {
   outline: none;
   border: none;
@@ -43,23 +72,12 @@
 }
 .form-body {
   height: 400px;
-  width: 500px;
+  resize: none;
   outline: none;
   border: none;
   margin: 0 20px 0px 20px;
   padding: 10px 0 0 0;
-  font-size: medium;
-}
-
-.close-btn {
-  border: none;
-  background-color: rgb(188, 229, 248);
-  font-weight: 500;
-  transition: box-shadow 0.2s;
-}
-
-.close-btn:hover {
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+  font-size: large;
 }
 
 .submit-btn {
@@ -79,6 +97,34 @@
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
 }
 
+/* Views Minimized Maximized */
+.minimize {
+  height: 2.5rem;
+  width: 250px;
+}
+.maximize {
+  bottom: 1.5rem;
+  inset-inline-start: 9.5rem;
+  height: 91%;
+  width: 83%;
+  border-radius: 20px;
+  box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.5);
+  /* sons */
+  .form-head {
+    border-radius: 15px;
+  }
+  .submit-btn {
+    width: 6rem;
+  }
+  .form-body {
+    height: 30rem;
+  }
+  /* when state maximize switch the maximize icon */
+  .maximize-btn {
+    content: url(https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_fullscreen_16px_1x.png);
+  }
+}
+
 /* from Aside.jsx */
 .compose-btn {
   text-decoration: none !important;
@@ -93,6 +139,6 @@
   transition: box-shadow 0.3s ease, transform 0.1s ease;
 }
 .compose-btn:hover {
-  box-shadow: 4px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 3px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }

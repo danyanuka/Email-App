@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useEffectUpdate } from "../hooks/useEffectUpdate";
 import {
   Outlet,
   useNavigate,
@@ -95,7 +96,6 @@ export function EmailIndex() {
     }
   }
 
-  // updating Starred and read properties
   async function onUpdateEmail(email) {
     const updatedEmail = await emailService.save(email);
     setEmails((prevEmail) =>
@@ -103,6 +103,7 @@ export function EmailIndex() {
         email.id === updatedEmail.id ? updatedEmail : email
       )
     );
+    return updatedEmail;
   }
 
   if (!emails) return <div>Loading your Emails...</div>;
@@ -120,7 +121,7 @@ export function EmailIndex() {
             onRemoveEmail={onRemoveEmail}
           />
         )}
-        <Outlet context={{ onAddEmail, tab: filterBy.tab }} />
+        <Outlet context={{ onUpdateEmail, onAddEmail, tab: filterBy.tab }} />
       </section>
 
       <Aside tab={filterBy.tab} unreadEmailsCount={unreadEmailsCount} />

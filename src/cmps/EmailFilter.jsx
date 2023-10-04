@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function EmailFilter({ onSetFilter, filterBy }) {
   const [filterByToEdit, setfilterByToEdit] = useState(filterBy);
 
-  useEffect(() => {
+  useEffectUpdate(() => {
     onSetFilter(filterByToEdit);
   }, [filterByToEdit]);
-
-  // function handleChange(ev) {
-  //   let { value, name, type } = ev.target;
-  //   if (type === "select-one") {
-  //     value = JSON.parse(value);
-  //   }
-  //   setfilterByToEdit((prevFilter) => ({ ...prevFilter, [name]: value }));
-  // }
 
   function handleChange({ target }) {
     let { name: field, value, type } = target;
@@ -64,12 +57,3 @@ export function EmailFilter({ onSetFilter, filterBy }) {
     </form>
   );
 }
-//         id: "e101",
-//         subject: "Miss you!",
-//         body: "Would love to catch up sometimes",
-//         isRead: false,
-//         isStarred: false,
-//         sentAt: 1551133930594,
-//         removedAt: null, //for later use
-//         from: "momo@momo.com",
-//         to: "user@appsus.com",

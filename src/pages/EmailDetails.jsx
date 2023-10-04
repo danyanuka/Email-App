@@ -46,12 +46,3 @@ export function EmailDetails() {
     </section>
   );
 }
-// id: "e101",
-//         subject: "Miss you!",
-//         body: "Would love to catch up sometimes",
-//         isRead: false,
-//         isStarred: false,
-//         sentAt: 1551133930594,
-//         removedAt: null, //for later use
-//         from: "momo@momo.com",
-//         to: "user@appsus.com",

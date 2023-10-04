@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { utilService } from "../services/util.service";
+// font awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faStar as shallowStar } from "@fortawesome/free-regular-svg-icons";
@@ -8,9 +9,7 @@ import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
 export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  function markAsRead(eventFrom) {
+  function OnMarkAsRead(eventFrom) {
     const emailToUpdate = {
       ...email,
       isRead: !eventFrom ? true : !email.isRead,
@@ -18,20 +17,12 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
     onUpdateEmail(emailToUpdate);
   }
 
-  function toggleStar() {
+  function OnToggleStar() {
     const emailToUpdate = {
       ...email,
       isStarred: !email.isStarred,
     };
     onUpdateEmail(emailToUpdate);
-  }
-
-  function onMouseEnter(e) {
-    setIsHovered(true);
-  }
-
-  function onMouseLeave(e) {
-    setIsHovered(false);
   }
 
   const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
@@ -42,20 +33,17 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
       style={{
         backgroundColor: dynClassColor,
         fontWeight: dynClassBoldness,
-        // ...hoverStyles,
       }}
       onClick={() => {
-        if (email.sentAt) markAsRead(false);
+        if (email.sentAt) OnMarkAsRead(false);
       }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
     >
       <div
         className="star"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          toggleStar(email);
+          OnToggleStar(email);
         }}
       >
         {email.isStarred ? (
@@ -70,41 +58,37 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
         {`${email.subject} - ` || "(No subject)"}
       </div>
       <p className="email-preview-body">{email.body}</p>
-      {/*  When is Hovered = False */}
-      {!isHovered && (
-        <span className="email-preview-date">
-          {utilService.getDayMonth(email)}
-        </span>
-      )}
-      {/* When is Hovered = True */}
-      {isHovered && (
-        <div className="btns">
-          <button
-            className="email-preview-env"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              markAsRead(true);
-            }}
-          >
-            {email.isRead === false ? (
-              <FontAwesomeIcon icon={faEnvelopeOpen} />
-            ) : (
-              <FontAwesomeIcon icon={faEnvelope} />
-            )}
-          </button>
-          <button
-            className="email-preview-remove"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onRemoveEmail(email.id);
-            }}
-          >
-            <FontAwesomeIcon icon={faTrashCan} />
-          </button>
-        </div>
-      )}
+
+      <span className="email-preview-date">
+        {utilService.getDayMonth(email)}
+      </span>
+
+      <div className="btns">
+        <button
+          className="email-preview-env"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            OnMarkAsRead(true);
+          }}
+        >
+          {email.isRead === false ? (
+            <FontAwesomeIcon icon={faEnvelopeOpen} />
+          ) : (
+            <FontAwesomeIcon icon={faEnvelope} />
+          )}
+        </button>
+        <button
+          className="email-preview-remove"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onRemoveEmail(email.id);
+          }}
+        >
+          <FontAwesomeIcon icon={faTrashCan} />
+        </button>
+      </div>
     </article>
   );
 }
