@@ -5,6 +5,10 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 export function Aside({ tab, unreadEmailsCount }) {
   const links = ["inbox", "starred", "sent", "draft", "all", "trash"];
 
+  // function getDynClass() {
+  //   return( `email-folder ${folder}` + (activeFolder == folder ? " active" : ""))
+  // }
+
   return (
     <aside className="aside">
       <Link to={`/email/compose/?tab=${tab}`} className="compose-btn">

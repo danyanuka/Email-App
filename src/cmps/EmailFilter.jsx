@@ -47,7 +47,7 @@ export function EmailFilter({ onSetFilter, filterBy }) {
           placeholder="Search Email"
           name="text"
           id="text"
-        ></input>
+        />
       </div>
       <select onChange={handleChange} name="isRead">
         <option value={"null"}>All</option>
