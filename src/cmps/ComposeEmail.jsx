@@ -131,7 +131,7 @@ export function ComposeEmail() {
       }}
     >
       <div className="form-head">
-        <h3>{title}</h3>
+        <h1>{title}</h1>
         <div className="top-bar-action-btns">
           <div
             onClick={(e) => {
@@ -189,7 +189,7 @@ export function ComposeEmail() {
         onChange={handleChange}
         type="text"
         name="body"
-        placeholder="Email's Body"
+        placeholder=""
         id="body"
         value={email.body}
         onClick={(e) => {

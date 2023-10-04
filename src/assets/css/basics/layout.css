@@ -17,7 +17,7 @@
 /* EmailIndex Grid */
 .email-index-grid-container {
   display: grid;
-  grid-template-columns: 256px 1fr 30px;
+  grid-template-columns: 256px 1fr 50px;
   grid-template-rows: 65px 1fr auto;
   background-color: #c9d6ff2c;
   height: 100%;
