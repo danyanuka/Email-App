@@ -32,26 +32,38 @@ async function query(filterBy) {
     // filtering By Tabs
     if (tab === "inbox") {
       emails = emails.filter(
-        (email) => email.to === loggedinUser.email && email.sentAt !== null
+        (email) =>
+          email.to === loggedinUser.email &&
+          email.sentAt !== null &&
+          email.removedAt === null
       );
     }
 
     if (tab === "starred") {
-      emails = emails.filter((email) => email.isStarred === true);
+      emails = emails.filter(
+        (email) => email.isStarred === true && email.removedAt === null
+      );
     }
 
     if (tab === "sent") {
       emails = emails.filter(
-        (email) => email.from === loggedinUser.email && email.sentAt !== null
+        (email) =>
+          email.from === loggedinUser.email &&
+          email.sentAt !== null &&
+          email.removedAt === null
       );
     }
 
     if (tab === "draft") {
-      emails = emails.filter((email) => email.sentAt === null);
+      emails = emails.filter(
+        (email) => email.sentAt === null && email.removedAt === null
+      );
     }
 
     if (tab === "all") {
-      emails = emails.filter((email) => email.sentAt !== null);
+      emails = emails.filter(
+        (email) => email.sentAt !== null && email.removedAt === null
+      );
     }
 
     if (tab === "trash") {
@@ -79,7 +91,11 @@ async function countUnreadEmails() {
   try {
     const emails = await storageService.query(STORAGE_KEY);
     const emailsFromInbox = emails.filter((email) => {
-      return email.to === loggedinUser.email && email.sentAt !== null;
+      return (
+        email.to === loggedinUser.email &&
+        email.sentAt !== null &&
+        email.removedAt === null
+      );
     });
 
     const propertyToCheck = "isRead";
@@ -101,6 +117,7 @@ function getById(id) {
 }
 
 function remove(id) {
+  console.log("remove");
   return storageService.remove(STORAGE_KEY, id);
 }
 
@@ -149,18 +166,6 @@ function _createEmails() {
   if (!emails || !emails.length) {
     emails = [
       {
-        id: "e101",
-        subject: "Miss you!",
-        body: "Belongs to inbox, sent to danyanuka",
-        isRead: false,
-        isStarred: false,
-        sentAt: 1551133930594,
-        removedAt: null, //for later use
-        from: "user@appsus.com",
-        to: "danyanuka@gmail.com",
-      },
-
-      {
         id: "e105",
         subject: "Miss you!",
         body: "Belongs to draft, sentAt is null",
@@ -181,6 +186,106 @@ function _createEmails() {
         removedAt: null, //for later use
         from: "danyanuka@gmail.com",
         to: "user@appsus.com",
+      },
+      // inbox
+      {
+        id: "i100",
+        subject: "Miss you!",
+        body: "Belongs to inbox, sent to danyanuka",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "user@appsus.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i101",
+        subject: "When can we meet?",
+        body: "Hey dan, im free all weekend. can we meet?",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "shlomofrid@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i102",
+        subject: "טופס לקבלת כרטיס",
+        body: "  דן שלום, אנא מלא את הטפסים כדי שנוכל לשלוח לך את הכרטיס החדש לכתובת.",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "hapoalim@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i103",
+        subject: "Delivery Update",
+        body: "Order 30260678937620: at local delivery company",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "aliexpress@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i104",
+        subject: "Company meeting",
+        body: "This is a reminder that we meet in my place at 10/10/23. IMPORTANT!",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "danicohen@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i105",
+        subject: "Job alerts",
+        body: "We found some jobs that might suit your preferences! take a look",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "LinkedIn@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i106",
+        subject: "Replay to your previous mail",
+        body: "The form is ready for you to fill, finish it and we can continue.",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "jackydorom@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i107",
+        subject: "כרטיס כניסה",
+        body: "ההזמנה שלך התקבלה אצלנו במערכת! הנה הכרטיסים :",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "getin@gmail.com",
+        to: "danyanuka@gmail.com",
+      },
+      {
+        id: "i108",
+        subject: "Enough",
+        body: "Just created 8 fake emails. i think its enough",
+        isRead: false,
+        isStarred: false,
+        sentAt: 1551133930594,
+        removedAt: null, //for later use
+        from: "user@appsus.com",
+        to: "danyanuka@gmail.com",
       },
     ];
     utilService.saveToStorage(STORAGE_KEY, emails);

@@ -20,6 +20,7 @@ export function EmailIndex() {
   const [unreadEmailsCount, setUnreadEmailsCount] = useState(0);
   const [filterBy, setFilterBy] = useState(emailService.filterBy());
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
 
   const tab = searchParams.get("tab");
 
@@ -41,7 +42,9 @@ export function EmailIndex() {
 
   async function loadEmails() {
     try {
+      setIsLoading(true);
       const emails = await emailService.query(filterBy);
+      setIsLoading(false);
       setEmails(emails);
     } catch (err) {
       console.error("Had issues loading Emails", err);
@@ -62,11 +65,16 @@ export function EmailIndex() {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...fieldToUpdate }));
   }
 
-  async function onRemoveEmail(emailId) {
+  async function onRemoveEmail(removedEmail) {
     try {
-      await emailService.remove(emailId);
+      if (!removedEmail.removedAt) {
+        removedEmail.removedAt = utilService.unixNow();
+        await emailService.save(removedEmail);
+      } else {
+        await emailService.remove(removedEmail.id);
+      }
       setEmails((prevEmails) =>
-        prevEmails.filter((email) => emailId !== email.id)
+        prevEmails.filter((email) => removedEmail.id !== email.id)
       );
 
       showUserMsg({ type: "success", txt: "Email Removed" });
@@ -113,7 +121,7 @@ export function EmailIndex() {
       <IndexNav filterBy={{ isRead, text }} onSetFilter={onSetFilter} />
 
       <section className="email-index-main">
-        {!params.emailId && (
+        {!params.emailId && !isLoading && (
           <EmailList
             tab={filterBy.tab}
             emails={emails}
@@ -121,6 +129,7 @@ export function EmailIndex() {
             onRemoveEmail={onRemoveEmail}
           />
         )}
+
         <Outlet context={{ onUpdateEmail, onAddEmail, tab: filterBy.tab }} />
       </section>
 
@@ -132,31 +141,3 @@ export function EmailIndex() {
     </div>
   );
 }
-
-// if theres problems with starred and read/unread thats the older solution
-// async function markAsRead(emailToMark, eventFrom) {
-//   try {
-//     if (eventFrom === false) emailToMark.isRead = true;
-//     else emailToMark.isRead = !emailToMark.isRead;
-//     await emailService.save(emailToMark);
-
-//     setEmails((prevEmails) =>
-//       prevEmails.map((email) =>
-//         email.id === emailToMark.id ? emailToMark : email
-//       )
-//     );
-//   } catch (error) {}
-// }
-
-// async function toggleStar(emailToStar) {
-//   try {
-//     emailToStar.isStarred = !emailToStar.isStarred;
-//     await emailService.save(emailToStar);
-
-//     setEmails((prevEmails) =>
-//       prevEmails.map((email) =>
-//         email.id === emailToStar.id ? emailToStar : email
-//       )
-//     );
-//   } catch (error) {}
-// }

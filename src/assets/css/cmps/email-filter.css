@@ -1,3 +1,10 @@
+.logo-title {
+  width: 50%;
+  margin-left: 20px;
+  margin-top: 9px;
+  opacity: 0.8;
+}
+
 .index-nav-title {
   color: #374048;
   font-weight: 500;

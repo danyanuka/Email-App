@@ -55,7 +55,7 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
 
       <DynPreview tab={tab} email={email} />
       <div className="email-preview-subject">
-        {`${email.subject} - ` || "(No subject)"}
+        {email.subject ? `${email.subject} -` : "(No subject)"}
       </div>
       <p className="email-preview-body">{email.body}</p>
 
@@ -80,10 +80,10 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
         </button>
         <button
           className="email-preview-remove"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onRemoveEmail(email.id);
+          onClick={(ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            onRemoveEmail(email);
           }}
         >
           <FontAwesomeIcon icon={faTrashCan} />
@@ -100,6 +100,10 @@ function DynPreview({ tab, email }) {
     case "draft":
       return <div className="email-preview-1st draft">Draft</div>;
     default:
-      return <div className="email-preview-1st">{email.from}</div>;
+      return (
+        <div className={email.sentAt ? "email-preview-1st" : "draft"}>
+          {email.sentAt ? email.from : "Draft"}
+        </div>
+      );
   }
 }

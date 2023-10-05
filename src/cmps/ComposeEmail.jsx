@@ -198,7 +198,7 @@ export function ComposeEmail() {
       />
 
       <button
-        onClick={(e) => ev.stopPropagation()}
+        onClick={(ev) => ev.stopPropagation()}
         className="submit-btn"
         type="submit"
       >

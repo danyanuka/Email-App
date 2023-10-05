@@ -2,10 +2,10 @@
 .compose-btn {
   display: flex;
   color: #2e2d2d;
-  background-color: rgb(188, 229, 248);
+  background-color: rgb(194, 231, 255);
   border: none;
   width: 55.5%;
-  padding: 14px;
+  padding: 8px 14px 20px 14px;
   margin-inline-start: 8px;
   border-radius: 15px;
   font-weight: 500;
@@ -30,14 +30,13 @@
 /* Tab Default */
 .tab {
   display: flex;
-  position: relative;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: #373535;
   padding: 5px 27px;
   transition: background-color 0.1s ease;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-
+  font-weight: 400;
   &:hover {
     background-color: #e0e0e07e;
   }
@@ -45,14 +44,13 @@
 
 .active-tab {
   display: flex;
-  position: relative;
-  font-size: 0.88rem;
-  padding: 4px 27px;
-  background-color: #d3e3fd;
+  font-size: 0.9rem;
   color: #494747;
+  padding: 5px 27px;
+  background-color: #d3e3fd;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .tab-text::first-letter {
