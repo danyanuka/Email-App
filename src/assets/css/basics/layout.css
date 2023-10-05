@@ -25,7 +25,8 @@
 
 .index-nav-title {
   grid-area: 1 / 1 / span 1 / span 1;
-  align-self: center;
+  padding-left: 0.7rem;
+  padding-top: 1rem;
 }
 
 .index-nav-filter {
@@ -42,11 +43,11 @@
 }
 
 .aside {
-  margin-top: 5px;
   grid-area: 2 / 1 / span 1 / span 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 15px;
+  margin-top: 7px;
 }
 .footer {
   grid-area: 3 / 2 / span 1 / span 1;

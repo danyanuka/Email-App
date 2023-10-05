@@ -1,17 +1,39 @@
-.tabs-container {
-  font-size: 1rem;
+/* Compose Btn */
+.compose-btn {
   display: flex;
-  flex-direction: column;
-  width: 95%;
-  /* margin-top: 1rem; */
+  color: #2e2d2d;
+  background-color: rgb(188, 229, 248);
+  border: none;
+  width: 55.5%;
+  padding: 14px;
+  margin-inline-start: 8px;
+  border-radius: 15px;
+  font-weight: 500;
+  transition: box-shadow 0.08s linear,
+    min-width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.compose-btn:hover {
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302),
+    0 4px 8px 3px rgba(60, 64, 67, 0.149);
 }
 
+.compose-btn-txt::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm/1x/create_black_24dp.png);
+  margin-right: 18px;
+}
+.tabs-container {
+  margin-top: 2px;
+  font-size: 1rem;
+  display: grid;
+  width: 94%;
+}
+/* Tab Default */
 .tab {
   display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #333;
-  padding: 8px 55px;
+  position: relative;
+  font-size: 0.88rem;
+  color: #373535;
+  padding: 5px 27px;
   transition: background-color 0.1s ease;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -23,12 +45,18 @@
 
 .active-tab {
   display: flex;
-  align-items: center;
-  padding: 8px 55px;
-  background-color: #67b3f652;
+  position: relative;
+  font-size: 0.88rem;
+  padding: 4px 27px;
+  background-color: #d3e3fd;
+  color: #494747;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  font-weight: 500;
+  font-weight: 700;
+}
+
+.tab-text::first-letter {
+  text-transform: uppercase;
 }
 
 .unread-emails {
@@ -38,4 +66,54 @@
   padding: 2px 5px;
   border-radius: 50%;
   margin-left: auto;
+}
+
+/* IMAGES! */
+.tab::before {
+  margin-right: 18px;
+}
+.active-tab::before {
+  margin-right: 18px;
+}
+/* inbox */
+.tab.tab1::before {
+  content: url(https:ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/inbox_baseline_nv700_20dp.png);
+}
+.active-tab.tab1::before {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/inbox_fill_baseline_p900_20dp.png);
+}
+/* starred */
+.tab.tab2::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm/1x/star_border_black_20dp.png);
+}
+.active-tab.tab2::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm/1x/star_black_20dp.png);
+}
+/* sent */
+.tab.tab3::before {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/send_baseline_nv700_20dp.png);
+}
+.active-tab.tab3::before {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/send_fill_baseline_p900_20dp.png);
+}
+/* drafts */
+.tab.tab4::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm/1x/insert_drive_file_black_20dp.png);
+}
+.active-tab.tab4::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm_filled/1x/insert_drive_file_black_20dp.png);
+}
+/* All */
+.tab.tab5::before {
+  content: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/stacked_email_baseline_nv700_20dp.png);
+}
+.active-tab.tab5::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm_filled/1x/mail_outline_black_20dp.png);
+}
+/* Trash */
+.tab.tab6::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm/1x/delete_black_20dp.png);
+}
+.active-tab.tab6::before {
+  content: url(https://www.gstatic.com/images/icons/material/system_gm_filled/1x/delete_black_20dp.png);
 }

@@ -105,12 +105,12 @@
   bottom: 1.5rem;
   inset-inline-start: 9.5rem;
   height: 91%;
-  width: 83%;
+  width: 80.5%;
   border-radius: 20px;
   box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.5);
   /* sons */
   .form-head {
-    border-radius: 15px;
+    border-radius: 10px;
   }
   .submit-btn {
     width: 6rem;
@@ -122,23 +122,4 @@
   .maximize-btn {
     content: url(https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_fullscreen_16px_1x.png);
   }
-}
-
-/* from Aside.jsx */
-.compose-btn {
-  text-decoration: none !important;
-  color: inherit;
-  background-color: rgb(188, 229, 248);
-  border: none;
-  width: 57%;
-  padding: 19px;
-  margin-inline-start: 8px;
-  border-radius: 15px;
-  font-weight: 500;
-  transition: box-shadow 0.08s linear,
-    min-width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.compose-btn:hover {
-  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302),
-    0 4px 8px 3px rgba(60, 64, 67, 0.149);
 }
