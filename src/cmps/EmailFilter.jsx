@@ -25,15 +25,23 @@ export function EmailFilter({ onSetFilter, filterBy }) {
       default:
         break;
     }
+    console.log("filterby?", filterBy);
     setfilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }));
   }
 
   function onSubmitFilter(ev) {
     ev.preventDefault();
-    console.log("filterby", filterBy);
+
     onSetFilter(filterByToEdit);
   }
 
+  const selectedOption =
+    filterBy.isRead === true
+      ? "true"
+      : filterBy.isRead === false
+      ? "false"
+      : "null";
+  console.log(filterBy);
   return (
     <form onSubmit={onSubmitFilter} className="index-nav-filter">
       <label htmlFor="text"></label>
@@ -42,6 +50,7 @@ export function EmailFilter({ onSetFilter, filterBy }) {
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </span>
         <input
+          value={filterBy.text}
           onChange={handleChange}
           type="text"
           placeholder="Search Email"
@@ -49,7 +58,7 @@ export function EmailFilter({ onSetFilter, filterBy }) {
           id="text"
         />
       </div>
-      <select onChange={handleChange} name="isRead">
+      <select onChange={handleChange} name="isRead" value={selectedOption}>
         <option value={"null"}>All</option>
         <option value={"false"}>Unread</option>
         <option value={"true"}>Read</option>

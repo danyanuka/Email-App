@@ -5,8 +5,9 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+// services
+import { showUserMsg } from "../services/event-bus-service";
 import { emailService } from "../services/email.service";
-import { useSearchParams } from "react-router-dom";
 import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function ComposeEmail() {
@@ -83,9 +84,10 @@ export function ComposeEmail() {
         if (!email.id) {
           const emailToSave = await emailService.save(email);
           setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
-        }
-        if (email.id) {
+          showUserMsg({ type: "success", txt: "Draft Saved" });
+        } else {
           onUpdateEmail(email);
+          showUserMsg({ type: "success", txt: "Draft Saved" });
         }
         setTitle("Draft Saved");
         setTimeout(() => {
@@ -96,30 +98,6 @@ export function ComposeEmail() {
       }
   }
 
-  // async function draftAutoSave() {
-  //   try {
-  //     const emailToSave = await emailService.save(email);
-  //     if (!email.id) {
-  //       setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
-  //     }
-  //     onUpdateEmail(emailToSave);
-  //     setTitle("Draft Saved");
-  //     setTimeout(() => {
-  //       setTitle(email.subject ? email.subject : "New Messege");
-  //     }, 2000);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // async function onCloseDraft() {
-  //   if (email.to !== "" || email.subject !== "") {
-  //     const emailToSave = await emailService.save(email);
-  //     if (!email.id) {
-  //       setEmail((prevEmail) => ({ ...prevEmail, id: emailToSave.id }));
-  //     }
-  //   }
-  // }
   console.log(composeView);
   return (
     <form

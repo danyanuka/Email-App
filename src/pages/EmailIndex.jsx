@@ -16,10 +16,13 @@ import { IndexNav } from "../cmps/IndexNav";
 import { Aside } from "../cmps/Aside";
 
 export function EmailIndex() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [emails, setEmails] = useState(null);
   const [unreadEmailsCount, setUnreadEmailsCount] = useState(0);
-  const [filterBy, setFilterBy] = useState(emailService.filterBy());
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [filterBy, setFilterBy] = useState(
+    emailService.getFilterFromParams(searchParams)
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
   const tab = searchParams.get("tab");
@@ -33,6 +36,7 @@ export function EmailIndex() {
   }, [searchParams]);
 
   useEffect(() => {
+    setSearchParams(filterBy);
     loadEmails();
   }, [filterBy]);
 
@@ -70,19 +74,19 @@ export function EmailIndex() {
       if (!removedEmail.removedAt) {
         removedEmail.removedAt = utilService.unixNow();
         await emailService.save(removedEmail);
+        showUserMsg({ type: "success", txt: "Email removed to trash" });
       } else {
         await emailService.remove(removedEmail.id);
+        showUserMsg({ type: "success", txt: "Email deleted permanently" });
       }
       setEmails((prevEmails) =>
         prevEmails.filter((email) => removedEmail.id !== email.id)
       );
-
-      showUserMsg({ type: "success", txt: "Email Removed" });
     } catch (error) {
       console.log("Email cannot be deleted ", error);
     }
   }
-
+  console.log(filterBy);
   // problems with the draft rendering! WIP
   async function onAddEmail(email) {
     try {

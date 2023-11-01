@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { utilService } from "../services/util.service";
+import { emailService } from "../services/email.service";
 // font awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,10 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
     };
     onUpdateEmail(emailToUpdate);
   }
+
+  // function DynamicDefaultPreviewDisplay {
+
+  // }
 
   const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
   const dynClassBoldness = email.isRead ? "400" : "700";

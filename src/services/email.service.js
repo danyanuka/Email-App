@@ -14,7 +14,8 @@ export const emailService = {
   createEmail,
   loggedinUser,
   countUnreadEmails,
-  filterBy,
+  getDefaultFilterBy,
+  getFilterFromParams,
 };
 
 const STORAGE_KEY = "emails";
@@ -153,7 +154,7 @@ function createEmail(
   };
 }
 
-function filterBy(isRead = null, text = "", tab = "") {
+function getDefaultFilterBy(isRead = null, text = "", tab = "") {
   return {
     isRead,
     text,
@@ -161,6 +162,26 @@ function filterBy(isRead = null, text = "", tab = "") {
   };
 }
 
+function getFilterFromParams(searchParams) {
+  const defaultFilter = getDefaultFilterBy();
+  const filterBy = {};
+  for (const field in defaultFilter) {
+    if (field === "isRead") {
+      const isReadValue = searchParams.get(field);
+      if (isReadValue === "true") {
+        filterBy[field] = true;
+      } else if (isReadValue === "false") {
+        filterBy[field] = false;
+      } else {
+        filterBy[field] = null; // Handle 'null' or other values
+      }
+    } else {
+      filterBy[field] = searchParams.get(field) || "";
+    }
+  }
+
+  return filterBy;
+}
 function _createEmails() {
   let emails = utilService.loadFromStorage(STORAGE_KEY);
   if (!emails || !emails.length) {
