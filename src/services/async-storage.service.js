@@ -4,6 +4,7 @@ export const storageService = {
   post,
   put,
   remove,
+  putMany,
 };
 
 function query(entityType, delay = 200) {
@@ -46,6 +47,22 @@ function put(entityType, updatedEntity) {
   });
 }
 
+function putMany(entityType, updatedEntities) {
+  return query(entityType).then((entities) => {
+    updatedEntities.forEach((updatedEntity) => {
+      const idx = entities.findIndex(
+        (entity) => entity.id === updatedEntity.id
+      );
+      if (idx >= 0) {
+        entities.splice(idx, 1, updatedEntity);
+      }
+    });
+
+    _save(entityType, entities);
+    return updatedEntities;
+  });
+}
+
 function remove(entityType, entityId) {
   return query(entityType).then((entities) => {
     const idx = entities.findIndex((entity) => entity.id === entityId);
@@ -58,6 +75,29 @@ function remove(entityType, entityId) {
   });
 }
 
+// function removeMany(entityType, entityIds) {
+//   return query(entityType).then((entities) => {
+//     const removedEntities = [];
+
+//     for (const entityId of entityIds) {
+//       const idx = entities.findIndex((entity) => entity.id === entityId);
+//       if (idx >= 0) {
+//         removedEntities.push(entities[idx]);
+//         entities.splice(idx, 1);
+//       }
+//     }
+
+//     if (removedEntities.length === 0) {
+//       throw new Error(
+//         `No entities found with the specified IDs in: ${entityType}`
+//       );
+//     }
+
+//     _save(entityType, entities);
+
+//     return removedEntities;
+//   });
+// }
 // Private functions
 
 function _save(entityType, entities) {

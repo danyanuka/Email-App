@@ -22,6 +22,7 @@ export function EmailIndex() {
   const [filterBy, setFilterBy] = useState(
     emailService.getFilterFromParams(searchParams)
   );
+  const [checkedEmails, setCheckedEmails] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +30,10 @@ export function EmailIndex() {
 
   const params = useParams();
   const navigate = useNavigate();
+
+  // WIP/ right now on the selected items functionallity, isRead not done yet.
+  // also theres a bug where the checkMarks is not removed when an action is done.
+  //
 
   // Sets the Tab to filterBy and triggers
   useEffect(() => {
@@ -86,7 +91,7 @@ export function EmailIndex() {
       console.log("Email cannot be deleted ", error);
     }
   }
-  console.log(filterBy);
+
   // problems with the draft rendering! WIP
   async function onAddEmail(email) {
     try {
@@ -118,6 +123,39 @@ export function EmailIndex() {
     return updatedEmail;
   }
 
+  // Selected Items By checkbox actions
+
+  async function onRemoveMany() {
+    try {
+      const updatedEmails = checkedEmails.map((email) => {
+        email.removedAt = utilService.unixNow();
+        return email;
+      });
+      console.log("onRemoveMany :", updatedEmails);
+      await emailService.updateMany(updatedEmails);
+      showUserMsg({ type: "success", txt: "Emails removed to trash" });
+      setCheckedEmails([]);
+      setEmails((prevEmails) =>
+        prevEmails.filter(
+          (email) => !updatedEmails.some((toRemove) => toRemove.id === email.id)
+        )
+      );
+    } catch {}
+  }
+
+  async function onStarMany() {
+    try {
+      const updatedEmails = checkedEmails.map((email) => {
+        email.isStarred = true;
+        return email;
+      });
+      await emailService.updateMany(updatedEmails);
+      showUserMsg({ type: "success", txt: "Emails starred" });
+      setCheckedEmails([]);
+    } catch (error) {}
+  }
+
+  console.log(checkedEmails);
   if (!emails) return <div>Loading your Emails...</div>;
   const { isRead, text } = filterBy;
   return (
@@ -131,6 +169,10 @@ export function EmailIndex() {
             emails={emails}
             onUpdateEmail={onUpdateEmail}
             onRemoveEmail={onRemoveEmail}
+            checkedEmails={checkedEmails}
+            setCheckedEmails={setCheckedEmails}
+            onRemoveMany={onRemoveMany}
+            onStarMany={onStarMany}
           />
         )}
 

@@ -25,7 +25,7 @@ export function EmailFilter({ onSetFilter, filterBy }) {
       default:
         break;
     }
-    console.log("filterby?", filterBy);
+
     setfilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }));
   }
 
@@ -41,7 +41,7 @@ export function EmailFilter({ onSetFilter, filterBy }) {
       : filterBy.isRead === false
       ? "false"
       : "null";
-  console.log(filterBy);
+
   return (
     <form onSubmit={onSubmitFilter} className="index-nav-filter">
       <label htmlFor="text"></label>

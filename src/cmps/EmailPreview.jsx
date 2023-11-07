@@ -9,7 +9,14 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
-export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
+export function EmailPreview({
+  email,
+  onUpdateEmail,
+  onRemoveEmail,
+  tab,
+  checkedEmails,
+  setCheckedEmails,
+}) {
   function OnMarkAsRead(eventFrom) {
     const emailToUpdate = {
       ...email,
@@ -26,12 +33,25 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
     onUpdateEmail(emailToUpdate);
   }
 
-  // function DynamicDefaultPreviewDisplay {
-
-  // }
+  async function onCheckMark(e) {
+    e.stopPropagation();
+    const isChecked = e.target.checked;
+    await setCheckedEmails((prev) => {
+      if (isChecked) {
+        if (!prev.includes(email)) {
+          return [...prev, email];
+        }
+      } else {
+        if (prev.includes(email)) {
+          return prev.filter((checkedEmail) => checkedEmail !== email);
+        }
+      }
+    });
+  }
 
   const dynClassColor = email.isRead ? "rgb(238 242 255)" : "white";
   const dynClassBoldness = email.isRead ? "400" : "700";
+
   return (
     <article
       className="email-preview"
@@ -43,19 +63,24 @@ export function EmailPreview({ email, onUpdateEmail, onRemoveEmail, tab }) {
         if (email.sentAt) OnMarkAsRead(false);
       }}
     >
-      <div
-        className="star"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          OnToggleStar(email);
-        }}
-      >
-        {email.isStarred ? (
-          <FontAwesomeIcon icon={solidStar} style={{ color: "#fbff00" }} />
-        ) : (
-          <FontAwesomeIcon icon={shallowStar} />
-        )}
+      <div className="start-preview-btns">
+        <div>
+          <input className="checkbox" onClick={onCheckMark} type="checkbox" />
+        </div>
+        <div
+          className="star"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            OnToggleStar(email);
+          }}
+        >
+          {email.isStarred ? (
+            <FontAwesomeIcon icon={solidStar} style={{ color: "#fbff00" }} />
+          ) : (
+            <FontAwesomeIcon icon={shallowStar} />
+          )}
+        </div>
       </div>
 
       <DynPreview tab={tab} email={email} />

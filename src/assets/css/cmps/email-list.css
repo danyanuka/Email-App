@@ -1,0 +1,23 @@
+.email-ul {
+  padding: 0 3px 0 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.list-head {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 0px 0px 26px;
+  gap: 10px;
+}
+.list-head button {
+  background-color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+  width: 30px;
+  height: 30px;
+}
+
+.email-list-container {
+  display: grid;
+}

@@ -1,8 +1,3 @@
-/* father of email-ul is email-index-main */
-.email-ul {
-  padding: 30px 5px 0 0;
-}
-
 .email-preview {
   padding: 12px 10px 10px 10px;
   border-bottom: solid 1px rgb(198, 211, 211);
@@ -77,4 +72,14 @@
   outline: none;
   border: none;
   background-size: 100%;
+}
+
+.start-preview-btns {
+  display: flex;
+  gap: 3px;
+}
+.checkbox {
+  height: 14px;
+  width: 14px;
+  margin-top: 3px;
 }

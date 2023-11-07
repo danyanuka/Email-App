@@ -16,6 +16,7 @@ export const emailService = {
   countUnreadEmails,
   getDefaultFilterBy,
   getFilterFromParams,
+  updateMany,
 };
 
 const STORAGE_KEY = "emails";
@@ -118,18 +119,23 @@ function getById(id) {
 }
 
 function remove(id) {
-  console.log("remove");
   return storageService.remove(STORAGE_KEY, id);
 }
 
+// function removeManyByIds(ids) {
+//   return storageService.removeMany(STORAGE_KEY, ids);
+// }
+
 function save(emailToSave) {
   if (emailToSave.id) {
-    console.log("2st put", emailToSave);
     return storageService.put(STORAGE_KEY, emailToSave);
   } else {
-    console.log("1st post", emailToSave);
     return storageService.post(STORAGE_KEY, emailToSave);
   }
+}
+
+function updateMany(emailsToSave) {
+  return storageService.putMany(STORAGE_KEY, emailsToSave);
 }
 
 function createEmail(
